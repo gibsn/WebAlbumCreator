@@ -1,0 +1,131 @@
+WEBALBUMCREATOR LIBRARY
+
+
+INTRODUCTION
+
+WebAlbumCreator is a UNIX-style library written in C++. Its main purpose is
+to give an ability to create a web page with your photos. All you need is the
+archive with photos in one of the popular formats (you can find the full list
+of supported formats below). The library has been originally written by
+Kirill Alekseev except the followings:
+    - zlib
+    - stb
+    - libarchive
+
+
+BUILDING
+
+You will need GNU Make to build this library.
+
+    make static //builds the static binary
+
+There are some examples coming with the library (you can find them in the
+'examples' folder).
+
+    make //builds the examples
+
+
+QUICK START
+
+The library contains three main classes:
+    1) Extractor
+    2) ThumbnailsCreator
+    3) WebPageGenerator
+
+So the whole algorithm to create a web page with your photos is as simple as
+using these three classes: you need to extract your photos with the Extractor,
+create thumbnails with the ThumbnailsCreator and generate a web page with the
+WebPageGenerator.
+
+Just include the 'WebAlbumCreator.h' and link with the -l wac
+
+
+EXTRACTOR
+
+Extractor is a class with a main purpose to extract photos from your archive.
+
+The following formats are accepted:
+    * GNU tar format
+    * Solaris 9 extended tar format (including ACLs)
+    * Old V7 tar archives
+    * POSIX ustar
+    * POSIX pax interchange format
+    * POSIX octet-oriented cpio
+    * SVR4 ASCII cpio
+    * POSIX octet-oriented cpio
+    * Binary cpio (big-endian or little-endian)
+    * ISO9660 CD-ROM images (with optional Rockridge or Joliet extensions)
+    * ZIP archives (with uncompressed or "deflate" compressed entries)
+    * GNU and BSD 'ar' archives
+    * 'mtree' format
+    * 7-Zip archives
+    * Microsoft CAB format
+    * LHA and LZH archives
+    * RAR archives
+    * XAR archives
+
+Extractor has only one constructor and it takes no arguments:
+
+    Extractor()
+
+Extractor has the following public methods:
+
+    void SetPathToUnpack(const char *)
+
+    void SetPathToFile(const char *)
+
+    const char *GetPathToUnpack() const
+
+    const char *GetPathToFile() const
+
+    void Extract()
+
+After you have created the Extractor object you will need to set the path to the
+archive with photos (required) and the path where to unpack (not required). If
+you don't set the path where to unpack your archive it will be unpacked to the
+directory where your executable is.
+
+
+THUMBNAILS CREATOR
+
+ThumbnailsCreator is a class with the main purpose to make thumbnails for your
+photos
+
+The following formats for photos are accepted:
+    * JPEG baseline & progressive (12 bpc/arithmetic not supported, same as stock IJG lib)
+    * PNG 1/2/4/8-bit-per-channel (16 bpc not supported)
+
+    * TGA (not sure what subset, if a subset)
+    * BMP non-1bpp, non-RLE
+    * PSD (composited view only, no extra channels, 8/16 bit-per-channel)
+
+    * GIF (*comp always reports as 4-channel)
+    * HDR (radiance rgbE format)
+    * PIC (Softimage PIC)
+    * PNM (PPM and PGM binary only)
+
+ThumbnailsCreator has only one constructor and it takes no arguments:
+
+    ThumbnailsCreator()
+
+ThumbnailsCreator has the following public methods:
+
+    void SetPathToOriginals(const char *)
+
+    void SetPathToThumbnails(const char *)
+
+    const char *GetPathToOriginals() const
+
+    const char *GetPathToThumbnails() const
+
+    void CreateThumbnails() const;
+
+After you have created the ThumbnailsCreator object you will need to set the
+path to the original phots (required) and the path where to put thumbnails
+(not required). If you don't set the path where to put the thumbnails it will
+be put to the directory where your executable is.
+
+
+WEB PAGE GENERATOR
+
+//in development

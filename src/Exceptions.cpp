@@ -1,0 +1,96 @@
+#include <string.h>
+#include <stdio.h>
+
+#include "archive.h"
+
+#include "Exceptions.h"
+
+
+LibArchiveEx::LibArchiveEx(Archive *a)
+{
+    SetText(0);
+    if (a)
+        SetText(archive_error_string(a));
+}
+
+
+void LibArchiveEx::Print()
+{
+    fprintf(stderr, "%s\n", GetText());
+}
+
+
+StbEx::StbEx()
+{
+
+}
+
+
+void StbEx::Print()
+{
+
+}
+
+
+ReadDirEx::ReadDirEx(const char *t)
+{
+    SetText(0);
+    if (t)
+        SetText(t);
+}
+
+
+void ReadDirEx::Print()
+{
+    fprintf(stderr, "%s\n", GetText());
+}
+
+
+void WrongPathToArchive::Print()
+{
+    fprintf(stderr, "You have entered the wrong path to the archive\n");
+}
+
+
+void NoPathToArchive::Print()
+{
+    fprintf(stderr, "You haven't enered any path to the archive \n");
+}
+
+
+void WrongPathToUnpack::Print()
+{
+    fprintf(stderr, "You have entered the wrong path where to unpack\n");
+}
+
+
+void WrongPathToOriginals::Print()
+{
+    fprintf(stderr, "You have entered the wrong path to the original photos\n");
+}
+
+
+void NoPathToOriginals::Print()
+{
+    fprintf(stderr, "You haven't entered any path to the original photos\n");
+}
+
+
+void WrongPathToThumbnails::Print()
+{
+    fprintf(stderr, "You have entered the wrong thumbnails destination path\n");
+}
+
+
+CorruptedImage::CorruptedImage(const char *t)
+{
+    text = 0;
+    if (t)
+        text = t;
+}
+
+
+void CorruptedImage::Print()
+{
+    printf("Corrupted image %s\n", text);
+}
