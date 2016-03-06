@@ -449,7 +449,7 @@ Copyright (C) 2010 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/Users/kirillalekseev/Prog/C/WebAlbumCreator/externals/libarchive-2.8.5'
+ac_pwd='/Users/kirill.alekseev/Documents/GitHub/WebAlbumCreator/externals/libarchive-2.8.5'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='build/autoconf/install-sh -c -d'
@@ -896,7 +896,7 @@ S["BSDCPIO_VERSION_STRING"]="2.8.5"
 S["ARCHIVE_LIBTOOL_VERSION"]="10:5:8"
 S["am__untar"]="${AMTAR} xf -"
 S["am__tar"]="${AMTAR} chof - \"$$tardir\""
-S["AMTAR"]="${SHELL} /Users/kirillalekseev/Prog/C/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run tar"
+S["AMTAR"]="${SHELL} /Users/kirill.alekseev/Documents/GitHub/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run tar"
 S["am__leading_dot"]="."
 S["SET_MAKE"]=""
 S["AWK"]="awk"
@@ -904,12 +904,12 @@ S["mkdir_p"]="$(top_builddir)/build/autoconf/install-sh -c -d"
 S["MKDIR_P"]="build/autoconf/install-sh -c -d"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="strip"
-S["install_sh"]="${SHELL} /Users/kirillalekseev/Prog/C/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/install-sh"
-S["MAKEINFO"]="${SHELL} /Users/kirillalekseev/Prog/C/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run makeinfo"
-S["AUTOHEADER"]="${SHELL} /Users/kirillalekseev/Prog/C/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run autoheader"
-S["AUTOMAKE"]="${SHELL} /Users/kirillalekseev/Prog/C/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run automake-1.11"
-S["AUTOCONF"]="${SHELL} /Users/kirillalekseev/Prog/C/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run autoconf"
-S["ACLOCAL"]="${SHELL} /Users/kirillalekseev/Prog/C/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run aclocal-1.11"
+S["install_sh"]="${SHELL} /Users/kirill.alekseev/Documents/GitHub/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/install-sh"
+S["MAKEINFO"]="${SHELL} /Users/kirill.alekseev/Documents/GitHub/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run makeinfo"
+S["AUTOHEADER"]="${SHELL} /Users/kirill.alekseev/Documents/GitHub/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run autoheader"
+S["AUTOMAKE"]="${SHELL} /Users/kirill.alekseev/Documents/GitHub/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run automake-1.11"
+S["AUTOCONF"]="${SHELL} /Users/kirill.alekseev/Documents/GitHub/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run autoconf"
+S["ACLOCAL"]="${SHELL} /Users/kirill.alekseev/Documents/GitHub/WebAlbumCreator/externals/libarchive-2.8.5/build/autoconf/missing --run aclocal-1.11"
 S["VERSION"]="2.8.5"
 S["PACKAGE"]="libarchive"
 S["CYGPATH_W"]="echo"
