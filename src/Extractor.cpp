@@ -8,7 +8,6 @@
 #include "archive_entry.h"
 
 #include "Exceptions.h"
-
 #include "Extractor.h"
 
 
