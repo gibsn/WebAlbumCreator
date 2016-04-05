@@ -37,7 +37,7 @@ stb:
 .PHONY: libarchive zlib stb
 
 clean:
-	make -C $(LIBARCHIVE_DIR) -f Makefile clean
+	make -C $(LIBARCHIVE_DIR) -f Makefile distclean
 	make -C $(ZLIB_DIR) -f Makefile distclean
 
 .PHONY: clean
