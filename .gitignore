@@ -6,6 +6,7 @@ deps/
 obj/
 photos.tar
 qwe.zip
+libwac.a
 
 externals/libarchive-2.8.5/
 
