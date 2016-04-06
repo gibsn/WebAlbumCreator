@@ -3,7 +3,6 @@
 **      Fix Tar archives
 **      Decrease size of thumbnails
 **      Make path exceptions more informative
-**      Remove untar from the major makefile
 */
 
 

@@ -6,6 +6,9 @@ deps/
 obj/
 photos.tar
 qwe.zip
+photos/
+thumbnails/
+web_pages/
 
 externals/libarchive-2.8.5/
 
