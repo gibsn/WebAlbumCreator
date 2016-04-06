@@ -45,11 +45,9 @@ void ThumbnailsCreator::CheckPaths() const
 //Must free outside this function
 char *ThumbnailsCreator::CreateNameForResized(const char *name) const
 {
-    char *new_name = (char *)malloc(strlen(name) + strlen("_resized") + 1);
-
-    int i = strlen(name);
-    while (name[i] != '.' && i >= 0)
-        --i;
+    char *i = strrchr(name, '.');
+	int length = (int)(i - name) + strlen("_resized") + strlen(path_to_thumbnails) + strlen(".png") + 2;
+    char *new_name = (char *)malloc(length);
 
     new_name[0] = '\0';
     if (path_to_thumbnails)
@@ -57,7 +55,7 @@ char *ThumbnailsCreator::CreateNameForResized(const char *name) const
         strcat(new_name, path_to_thumbnails);
         strcat(new_name, "/");
     }
-    strncat(new_name, name, i);
+    strncat(new_name, name, (int)(i - name));
     strcat(new_name, "_resized");
     strcat(new_name, ".png");
 
@@ -69,7 +67,7 @@ char *ThumbnailsCreator::CreateNameForResized(const char *name) const
 //Must free outside this function
 char *ThumbnailsCreator::CreateFullPath(const char *name) const
 {
-    int length = strlen(path_to_originals) + strlen(name) + 1;
+    int length = strlen(path_to_originals) + strlen(name) + 2;
     char *full_path = (char *)malloc(length);
     full_path[0] = '\0';
     strcat(full_path, path_to_originals);

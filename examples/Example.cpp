@@ -22,13 +22,14 @@ int main(int argc, const char **argv)
         thmb_creator.SetPathToOriginals(argv[2]);
         thmb_creator.SetPathToThumbnails(argv[3]);
         thmb_creator.CreateThumbnails();
-
+/*
         WebPageGenerator web_page_generator;
         web_page_generator.SetPageTitle("Hello, world");
         web_page_generator.SetPathToOriginals(argv[2]);
         web_page_generator.SetPathToThumbnails(argv[3]);
         web_page_generator.SetPathToWebPage(argv[4]);
         web_page_generator.GenerateWebPage();
+*/
     }
     catch (Exception &ex)
     {
