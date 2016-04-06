@@ -26,9 +26,6 @@ src_to_obj = $(addprefix $(OBJ_DIR)/, $(notdir $(1:.cpp=.o)))
 example: examples/Example.cpp $(OBJ_MODULES)
 	$(CXX) $(LDFLAGS) $(CXXFLAGS) examples/Example.cpp $(OBJ_MODULES) -o Example
 
-untar: examples/untar.c
-	$(CXX) $(LDFLAGS) $(CXXFLAGS) examples/untar.c -o untar
-
 static: $(STATIC_LIB)
 
 ifneq ($(MAKECMDGOALS), clean)
@@ -63,6 +60,7 @@ clean:
 	rm -f Example
 	rm -rf Example.dSYM
 	rm -f bridge.touch
+	rm -rf $(STATIC_LIB)
 	make -C $(dir $(BRIDGE_DIR)/Makefile) -f Makefile clean
 
 .PHONY: all clean
