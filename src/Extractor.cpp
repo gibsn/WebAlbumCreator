@@ -57,7 +57,7 @@ void Extractor::SetUpPathToUnpack(ArchiveEntry *entry)
     if (filename)
         free(filename);
     if (output_path)
-        delete output_path;
+        delete[] output_path;
 }
 
 
