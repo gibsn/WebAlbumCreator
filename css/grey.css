@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    background: #DBDFDF;
+}
+
+A {
+    text-decoration: none;
+}
+
+.album {
+    background: #DBDFDF;
+    float: left;
+    text-align: center;
+}
+
+.photo_square {
+    position: relative;
+    height: 375px;
+    width: 375px;
+    margin: 7px;
+    display: inline-block;
+    vertical-align: top
+}
+
+.photo_square:hover {
+    background: #B1B5B5;
+}
+
+.photo_square img {
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}

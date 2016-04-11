@@ -48,7 +48,7 @@ void WebPageGenerator::FinishWebPage() const
 
 void WebPageGenerator::GenerateWebPage()
 {
-    if ((fd = open(path_to_web_page, O_WRONLY | O_CREAT | O_TRUNC, 0666)) == -1)
+    if ((fd = open(path_to_web_page, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
     {
         perror("path_to_webpage");
     }
