@@ -9,11 +9,10 @@ A {
 
 .album {
     background: #DBDFDF;
-    float: left;
     text-align: center;
 }
 
-.photo_square {
+.photo_box {
     position: relative;
     height: 375px;
     width: 375px;
@@ -22,11 +21,11 @@ A {
     vertical-align: top
 }
 
-.photo_square:hover {
+.photo_box:hover {
     background: #B1B5B5;
 }
 
-.photo_square img {
+.photo_box img {
     position: absolute;
     width: auto;
     height: auto;

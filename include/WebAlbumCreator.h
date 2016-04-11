@@ -3,6 +3,8 @@
 **      Fix Tar archives
 **      Decrease size of thumbnails
 **      Make path exceptions more informative
+**		Make exceptions for WebPageGenerator
+**      Get rid of stl
 */
 
 

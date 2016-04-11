@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "Exceptions.h"
+#include "Common.h"
 
 
 WebPageGenerator::WebPageGenerator()
@@ -20,29 +21,20 @@ WebPageGenerator::~WebPageGenerator()
 }
 
 
-char *WebPageGenerator::StrCatAlloc(char *s1, const char *s2) const
-{
-    s1 = (char *)realloc(s1, strlen(s1) + strlen(s2) + 1);
-    s1 = strcat(s1, s2);
-    return s1;
-}
-
-
 void WebPageGenerator::InitWebPage() const
 {
-    char *buf = strdup("<html>\n\t<head>\n\t\t<title>");
-    buf = StrCatAlloc(buf, page_title);
-    buf = StrCatAlloc(buf, "</title>\n\t</head>\n\t<body>\n");
+    char *css = "../css/blue.css";
+    int length = strlen(PAGE_HEAD) + strlen(css) + strlen(page_title);
+    char *buf = new char[length];
+    sprintf(buf, PAGE_HEAD, page_title, css);
     write(fd, buf, strlen(buf));
-    free(buf);
+    delete [] buf;
 }
 
 
 void WebPageGenerator::FinishWebPage() const
 {
-    char *buf = strdup("\t</body>\n</html>");
-    write(fd, buf, strlen(buf));
-    free(buf);
+    write(fd, PAGE_BOTTOM, strlen(PAGE_BOTTOM));
 }
 
 
@@ -54,6 +46,24 @@ void WebPageGenerator::GenerateWebPage()
     }
 
     InitWebPage();
+
+    while (originals.size())
+    {
+        char *src_name = originals.front();
+        originals.pop_front();
+        char *thmb_name = thumbnails.front();
+        thumbnails.pop_front();
+
+        int length = strlen(PAGE_IMAGE) + strlen(src_name) + strlen(thmb_name);
+        char *buf = new char[length];
+        sprintf(buf, PAGE_IMAGE, src_name, thmb_name);
+        write(fd, buf, strlen(buf));
+
+        delete [] buf;
+        free(src_name);
+        free(thmb_name);
+    }
+
     FinishWebPage();
 
     close(fd);

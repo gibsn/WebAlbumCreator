@@ -1,3 +1,5 @@
+#include "ThumbnailsCreator.h"
+
 #include <dirent.h>
 #include <string.h>
 
@@ -11,8 +13,7 @@
 #include "stb_image_write.h"
 
 #include "Exceptions.h"
-
-#include "ThumbnailsCreator.h"
+#include "Common.h"
 
 
 ThumbnailsCreator::ThumbnailsCreator()
@@ -78,7 +79,7 @@ char *ThumbnailsCreator::CreateFullPath(const char *name) const
 }
 
 
-void ThumbnailsCreator::ProcessPhoto(char *name) const
+char *ThumbnailsCreator::ProcessPhoto(char *name) const
 {
     int in_w, in_h, in_n;
 
@@ -102,42 +103,34 @@ void ThumbnailsCreator::ProcessPhoto(char *name) const
 
     stbi_write_png(new_name, out_w, out_h, 4, resized, 0);
 
-    free(new_name);
     free(resized);
     stbi_image_free(src);
+
+    return new_name;
 }
 
 
-int ThumbnailsCreator::IsImage(const char *name) const
-{
-    int i = strlen(name);
-    while (name[i] != '.' && i >= 0)
-        --i;
-    if (i < 0)
-        return 0;
-
-    if (strcmp(name + i + 1, "jpg") == 0 ||
-        strcmp(name + i + 1, "JPG") == 0 ||
-        strcmp(name + i + 1, "bmp") == 0 ||
-        strcmp(name + i + 1, "BMP") == 0 ||
-        strcmp(name + i + 1, "png") == 0 ||
-        strcmp(name + i + 1, "PNG") == 0)
-        return 1;
-    else
-        return 0;
-}
-
-
-void ThumbnailsCreator::CreateThumbnails() const
+void ThumbnailsCreator::CreateThumbnails()
 {
     CheckPaths();
     DIR *dir = opendir(path_to_originals);
     DirEnt *curr_file;
     while ((curr_file = readdir(dir)) != 0)
     {
-        char *name = curr_file->d_name;
-        if (IsImage(name))
-            ProcessPhoto(name);
+        char *src_name = curr_file->d_name;
+        if (IsImage(src_name))
+        {
+            char *thmb_name = ProcessPhoto(src_name);
+            char *src_full_path = strdup(path_to_originals);
+
+            src_full_path = StrCatAlloc(src_full_path, "/");
+            src_full_path = StrCatAlloc(src_full_path, src_name);
+            thumbnails.push_back(realpath(thmb_name, 0));
+            originals.push_back(realpath(src_full_path, 0));
+
+            free(thmb_name);
+            free(src_full_path);
+        }
     }
     closedir(dir);
 }
