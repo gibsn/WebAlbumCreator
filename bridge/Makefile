@@ -18,6 +18,7 @@ libarchive:
 	cd $(LIBARCHIVE_DIR) && ./configure $(WITHOUT_FLAGS)
 	make -C $(LIBARCHIVE_DIR) -f Makefile
 	cp $(LIBARCHIVE_DIR)/.libs/$(LIBARCHIVE_STATIC) $(LIBRARY_DIR)/
+	cp $(LIBARCHIVE_DIR)/config.h $(INCLUDE_DIR)/
 	cp $(LIBARCHIVE_DIR)/libarchive/archive.h $(INCLUDE_DIR)/
 	cp $(LIBARCHIVE_DIR)/libarchive/archive_entry.h $(INCLUDE_DIR)/
 

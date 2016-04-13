@@ -6,6 +6,7 @@
 
 #include "archive.h"
 #include "archive_entry.h"
+#include "config.h"
 
 #include "Exceptions.h"
 #include "Extractor.h"
@@ -144,11 +145,11 @@ void Extractor::CopyData(Archive *ar, Archive *aw) const
         r = archive_read_data_block(ar, &buff, &size, &offset);
         if (r == ARCHIVE_EOF)
             return;
-        if (r == ARCHIVE_WARN || r == ARCHIVE_FATAL)
+        if (r == ARCHIVE_FATAL)
             throw LibArchiveEx(ar);
 
         r = archive_write_data_block(aw, buff, size, offset);
-        if (r == ARCHIVE_WARN || r == ARCHIVE_FATAL)
+        if (r == ARCHIVE_FATAL)
             throw LibArchiveEx(aw);
     }
 }
