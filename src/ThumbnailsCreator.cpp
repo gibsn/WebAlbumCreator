@@ -46,7 +46,7 @@ void ThumbnailsCreator::CheckPaths() const
 //Must free outside this function
 char *ThumbnailsCreator::CreateNameForResized(const char *name) const
 {
-    char *i = strrchr(name, '.');
+    const char *i = strrchr(name, '.');
 	int length = (int)(i - name) + strlen("_resized") + strlen(path_to_thumbnails) + strlen(".png") + 2;
     char *new_name = (char *)malloc(length);
 
@@ -125,8 +125,8 @@ void ThumbnailsCreator::CreateThumbnails()
 
             src_full_path = StrCatAlloc(src_full_path, "/");
             src_full_path = StrCatAlloc(src_full_path, src_name);
-            thumbnails.push_back(realpath(thmb_name, 0));
-            originals.push_back(realpath(src_full_path, 0));
+            thumbnails.Append(realpath(thmb_name, 0));
+            originals.Append(realpath(src_full_path, 0));
 
             free(thmb_name);
             free(src_full_path);
@@ -134,3 +134,7 @@ void ThumbnailsCreator::CreateThumbnails()
     }
     closedir(dir);
 }
+
+
+ThumbnailsCreator::~ThumbnailsCreator()
+{}

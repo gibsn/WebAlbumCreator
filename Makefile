@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -g -Wall
-CXXFLAGS += -Wno-unused-variable -Wno-unused-value
+CXXFLAGS += -Wno-unused-variable -Wno-unused-value -std=c++98
 
 SRC_DIR = src
 INCLUDE_DIR = include
@@ -24,7 +24,7 @@ LDFLAGS += -l archive -l z
 src_to_obj = $(addprefix $(OBJ_DIR)/, $(notdir $(1:.cpp=.o)))
 
 example: examples/Example.cpp $(OBJ_MODULES)
-	$(CXX) $(LDFLAGS) $(CXXFLAGS) examples/Example.cpp $(OBJ_MODULES) -o Example
+	$(CXX) $(CXXFLAGS) examples/Example.cpp $(OBJ_MODULES) -o Example $(LDFLAGS)
 
 static: $(STATIC_LIB)
 

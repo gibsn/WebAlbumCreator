@@ -2,7 +2,9 @@
 #define WEB_PAGE_GENERATOR_H_SENTRY
 
 #include <string.h>
-#include <list>
+#include <stdio.h>
+
+#include "List.h"
 
 #define PAGE_HEAD "\
 <!DOCTYPE html>\n\
@@ -37,8 +39,8 @@ class WebPageGenerator
     char *page_title;
     const char *path_to_web_page;
     int fd;
-    std::list<char *> originals;
-    std::list<char *> thumbnails;
+    List originals;
+    List thumbnails;
 
     void InitWebPage() const;
     void FinishWebPage() const;
@@ -49,8 +51,8 @@ public:
 
     void SetPageTitle(const char *t) { page_title = strdup(t); }
     void SetPathToWebPage(const char *p) { path_to_web_page = p; }
-    void SetOriginals(std::list<char *> l) { originals = l; }
-    void SetThumbnails(std::list<char *> l) { thumbnails = l; }
+    void SetOriginals(const List &l) { originals = l; }
+    void SetThumbnails(const List &l) { thumbnails = l; }
 
     const char *GetPageTitle() const { return page_title; }
     const char *GetPathToWebPage() const { return path_to_web_page; }

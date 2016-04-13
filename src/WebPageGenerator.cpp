@@ -47,21 +47,19 @@ void WebPageGenerator::GenerateWebPage()
 
     InitWebPage();
 
-    while (originals.size())
+    originals.ResetCurr();
+    thumbnails.ResetCurr();
+    char *src_name, *thmb_name;
+    while (
+        (src_name = originals.GetNext()) &&
+        (thmb_name = thumbnails.GetNext()))
     {
-        char *src_name = originals.front();
-        originals.pop_front();
-        char *thmb_name = thumbnails.front();
-        thumbnails.pop_front();
-
         int length = strlen(PAGE_IMAGE) + strlen(src_name) + strlen(thmb_name);
         char *buf = new char[length];
         sprintf(buf, PAGE_IMAGE, src_name, thmb_name);
         write(fd, buf, strlen(buf));
 
         delete [] buf;
-        free(src_name);
-        free(thmb_name);
     }
 
     FinishWebPage();
