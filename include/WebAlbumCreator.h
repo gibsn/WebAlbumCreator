@@ -1,5 +1,6 @@
 /*
 **  TODO
+**      Add recursive search for photos
 **      Fix Tar archives
 **      Decrease size of thumbnails
 **      Make path exceptions more informative
