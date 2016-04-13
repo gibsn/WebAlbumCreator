@@ -23,7 +23,7 @@ WebPageGenerator::~WebPageGenerator()
 
 void WebPageGenerator::InitWebPage() const
 {
-    char *css = "../css/blue.css";
+    const char *css = "../css/blue.css";
     int length = strlen(PAGE_HEAD) + strlen(css) + strlen(page_title);
     char *buf = new char[length];
     sprintf(buf, PAGE_HEAD, page_title, css);
@@ -50,6 +50,7 @@ void WebPageGenerator::GenerateWebPage()
     originals.ResetCurr();
     thumbnails.ResetCurr();
     char *src_name, *thmb_name;
+
     while (
         (src_name = originals.GetNext()) &&
         (thmb_name = thumbnails.GetNext()))

@@ -4,8 +4,9 @@ bridge/include/
 bridge/lib/
 deps/
 obj/
-photos.tar
-qwe.zip
+*.tar.gz
+*.tar
+*.zip
 photos/
 thumbnails/
 web_pages/

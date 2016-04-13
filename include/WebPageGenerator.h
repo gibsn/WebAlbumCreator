@@ -2,7 +2,6 @@
 #define WEB_PAGE_GENERATOR_H_SENTRY
 
 #include <string.h>
-#include <stdio.h>
 
 #include "List.h"
 

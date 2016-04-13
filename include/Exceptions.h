@@ -118,6 +118,15 @@ public:
 };
 
 
+class NoPathToThumbnails : public UserEx
+{
+
+public:
+	NoPathToThumbnails() {};
+	void Print();
+};
+
+
 class CorruptedImage: public UserEx
 {
     const char *text;

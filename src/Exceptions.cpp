@@ -82,6 +82,12 @@ void WrongPathToThumbnails::Print()
 }
 
 
+void NoPathToThumbnails::Print()
+{
+	fprintf(stderr, "You haven't entered any path where to store the thumbnails\n");
+}
+
+
 CorruptedImage::CorruptedImage(const char *t)
 {
     text = 0;

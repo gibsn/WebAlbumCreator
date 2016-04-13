@@ -2,6 +2,8 @@
 
 #include <dirent.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -32,6 +34,9 @@ void ThumbnailsCreator::CheckPaths() const
         throw WrongPathToOriginals();
     closedir(dir);
 
+    if (path_to_thumbnails == 0)
+        throw NoPathToThumbnails();
+
     if (path_to_thumbnails)
     {
         dir = opendir(path_to_thumbnails);
@@ -44,50 +49,30 @@ void ThumbnailsCreator::CheckPaths() const
 
 //This returns a pointer to allocated dynamic memory
 //Must free outside this function
-char *ThumbnailsCreator::CreateNameForResized(const char *name) const
+char *ThumbnailsCreator::CreatePathForResized(const char *img_path) const
 {
-    const char *i = strrchr(name, '.');
-	int length = (int)(i - name) + strlen("_resized") + strlen(path_to_thumbnails) + strlen(".png") + 2;
-    char *new_name = (char *)malloc(length);
+    const char *name = strrchr(img_path, '/');
+    char *resized_path = strdup(path_to_thumbnails);
+    resized_path = StrCatAlloc(resized_path, name);
 
-    new_name[0] = '\0';
-    if (path_to_thumbnails)
-    {
-        strcat(new_name, path_to_thumbnails);
-        strcat(new_name, "/");
-    }
-    strncat(new_name, name, (int)(i - name));
-    strcat(new_name, "_resized");
-    strcat(new_name, ".png");
+    char *extension = strrchr(resized_path, '.');
+    *extension = '\0';
 
-    return new_name;
+    resized_path = StrCatAlloc(resized_path, "_resized");
+    resized_path = StrCatAlloc(resized_path, ".png");
+
+    return resized_path;
 }
 
 
-//This returns a pointer to allocated dynamic memory
-//Must free outside this function
-char *ThumbnailsCreator::CreateFullPath(const char *name) const
-{
-    int length = strlen(path_to_originals) + strlen(name) + 2;
-    char *full_path = (char *)malloc(length);
-    full_path[0] = '\0';
-    strcat(full_path, path_to_originals);
-    strcat(full_path, "/");
-    strcat(full_path, name);
-
-    return full_path;
-}
-
-
-char *ThumbnailsCreator::ProcessPhoto(char *name) const
+char *ThumbnailsCreator::ResizeAndSave(const char *img_path) const
 {
     int in_w, in_h, in_n;
 
-    char *full_path = CreateFullPath(name);
-    Img *src = stbi_load(full_path, &in_w, &in_h, &in_n, 4);
-    free(full_path);
+    Img *src = stbi_load(img_path, &in_w, &in_h, &in_n, 4);
+
     if (src == 0)
-        throw CorruptedImage(name);
+        throw CorruptedImage(img_path);
 
     float k = sqrt(float(60000) / in_h / in_w);
     int out_w = k * in_w;
@@ -99,42 +84,74 @@ char *ThumbnailsCreator::ProcessPhoto(char *name) const
         resized, out_w, out_h, 0,
         4);
 
-    char *new_name = CreateNameForResized(name);
+    char *resized_img_path = CreatePathForResized(img_path);
 
-    stbi_write_png(new_name, out_w, out_h, 4, resized, 0);
+    stbi_write_png(resized_img_path, out_w, out_h, 4, resized, 0);
 
     free(resized);
     stbi_image_free(src);
 
-    return new_name;
+    return resized_img_path;
+}
+
+
+int ThumbnailsCreator::IsDir(const char *dir) const
+{
+    DIR *n = opendir(dir);
+    if (n)
+        closedir(n);
+
+    return n != 0;
+}
+
+
+void ThumbnailsCreator::ProcessImage(const char *path)
+{
+    char *thmb_name = ResizeAndSave(path);
+
+    thumbnails.Append(realpath(thmb_name, 0));
+    originals.Append(realpath(path, 0));
+
+    free(thmb_name);
+}
+
+
+void ThumbnailsCreator::ProcessDirectory(const char *path)
+{
+    DIR *dir = opendir(path);
+    DirEnt *curr_file;
+    while ((curr_file = readdir(dir)) != 0)
+    {
+        char *file_path = StrCatAlloc(strdup(path), "/");
+        file_path = StrCatAlloc(file_path, curr_file->d_name);
+
+        if (IsImage(file_path))
+            ProcessImage(file_path);
+
+        if (IsDir(file_path) &&
+            strcmp(curr_file->d_name, ".") &&
+            strcmp(curr_file->d_name, ".."))
+        {
+            ProcessDirectory(file_path);
+        }
+
+        free (file_path);
+    }
+    closedir(dir);
 }
 
 
 void ThumbnailsCreator::CreateThumbnails()
 {
     CheckPaths();
-    DIR *dir = opendir(path_to_originals);
-    DirEnt *curr_file;
-    while ((curr_file = readdir(dir)) != 0)
-    {
-        char *src_name = curr_file->d_name;
-        if (IsImage(src_name))
-        {
-            char *thmb_name = ProcessPhoto(src_name);
-            char *src_full_path = strdup(path_to_originals);
-
-            src_full_path = StrCatAlloc(src_full_path, "/");
-            src_full_path = StrCatAlloc(src_full_path, src_name);
-            thumbnails.Append(realpath(thmb_name, 0));
-            originals.Append(realpath(src_full_path, 0));
-
-            free(thmb_name);
-            free(src_full_path);
-        }
-    }
-    closedir(dir);
+    ProcessDirectory(path_to_originals);
 }
 
 
 ThumbnailsCreator::~ThumbnailsCreator()
-{}
+{
+    if (path_to_originals)
+        free(path_to_originals);
+    if (path_to_thumbnails)
+        free(path_to_thumbnails);
+}

@@ -4,4 +4,5 @@ make
 mkdir -p photos
 mkdir -p thumbnails
 mkdir -p web_pages
-open web_pages/Hello.html
+./Example foo.zip photos thumbnails web_pages/test.html
+open web_pages/test.html

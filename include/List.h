@@ -1,7 +1,6 @@
 #ifndef LIST_H_SENTRY
 #define LIST_H_SENTRY
 
-#include <stdio.h>
 struct Node
 {
     Node *next;

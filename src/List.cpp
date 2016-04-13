@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 
 List::List()
@@ -78,11 +79,15 @@ void List::Append(char *s)
 
 char *List::GetNext()
 {
+	if (!head)
+		return 0;
+
     if (!curr)
     {
         curr = head;
         return curr->data;
     }
+
     if (curr->next)
     {
         curr = curr->next;
