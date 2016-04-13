@@ -1,7 +1,7 @@
 /*
 **  TODO
-**      Fix Tar archives
 **      Decrease size of thumbnails
+**		Add ability to manually choose resolution
 **      Make path exceptions more informative
 **		Make exceptions for WebPageGenerator
 */

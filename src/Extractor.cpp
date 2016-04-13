@@ -114,17 +114,17 @@ void Extractor::Extract()
         r = archive_read_next_header(in, &entry);
         if (r == ARCHIVE_EOF)
             break;
-        if (r == ARCHIVE_WARN || r == ARCHIVE_FATAL)
+        if (r == ARCHIVE_FATAL)
             throw LibArchiveEx(in);
         if (path_to_unpack)
             SetUpPathToUnpack(entry);
         r = archive_write_header(out, entry);
-        if (r == ARCHIVE_WARN || r == ARCHIVE_FATAL)
+        if (r == ARCHIVE_FATAL)
             throw LibArchiveEx(in);
         if (archive_entry_size(entry) > 0)
             CopyData(in, out);
         r = archive_write_finish_entry(out);
-        if (r == ARCHIVE_WARN || r == ARCHIVE_FATAL)
+        if (r == ARCHIVE_FATAL)
             throw LibArchiveEx(out);
     }
 

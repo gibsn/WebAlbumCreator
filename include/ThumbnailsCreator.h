@@ -18,6 +18,7 @@ class ThumbnailsCreator
     void ProcessImage(const char *);
     void ProcessDirectory(const char *);
     int IsDir(const char *) const;
+	int IsOrdinaryFile (const char *) const;
     char *CreatePathForResized(const char *) const;
 
 public:

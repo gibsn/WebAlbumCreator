@@ -105,6 +105,12 @@ int ThumbnailsCreator::IsDir(const char *dir) const
 }
 
 
+int ThumbnailsCreator::IsOrdinaryFile(const char *name) const
+{
+    return name[0] != '.';
+}
+
+
 void ThumbnailsCreator::ProcessImage(const char *path)
 {
     char *thmb_name = ResizeAndSave(path);
@@ -125,7 +131,7 @@ void ThumbnailsCreator::ProcessDirectory(const char *path)
         char *file_path = StrCatAlloc(strdup(path), "/");
         file_path = StrCatAlloc(file_path, curr_file->d_name);
 
-        if (IsImage(file_path))
+        if (IsImage(file_path) && IsOrdinaryFile(curr_file->d_name))
             ProcessImage(file_path);
 
         if (IsDir(file_path) &&
