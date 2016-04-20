@@ -179,10 +179,16 @@ Lets take a closer look at the WebPageGenerator class:
 
 
 After you have created the WebPageGenerator object you will need to set the web
-page title (required), the path to web page being generated and the lists of
-paths to original photos and thumbnails (you can get those from the
+page title (required), the path to web page being generated (required) and the lists of
+paths to original photos and thumbnails (required, you can get those from the
 ThumbnailsCreator class).
 
 Then you call GenerateWebPage() method and after is's finished you have your
 web album page.
+
+
+EXAMPLES
+
+You can take a look at the example.cpp in the examples/ folder
+
 

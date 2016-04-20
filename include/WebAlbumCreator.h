@@ -4,6 +4,7 @@
 **		Add ability to manually choose resolution
 **      Make path exceptions more informative
 **		Make exceptions for WebPageGenerator
+**		Make css variable
 */
 
 
