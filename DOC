@@ -7,7 +7,7 @@ WebAlbumCreator is a UNIX-style library written in C++. Its main purpose is
 to give an ability to create a web page with your photos. All you need is the
 archive with photos in one of the popular formats (you can find the full list
 of supported formats below). The library has been originally written by
-Kirill Alekseev except the followings:
+Kirill Alekseev except the following:
     - zlib
     - stb
     - libarchive
@@ -32,7 +32,7 @@ The library contains three main classes:
     2) ThumbnailsCreator
     3) WebPageGenerator
 
-So the whole algorithm to create a web page with your photos is as simple as
+So the entire algorithm to create a web page with your photos is as simple as
 using these three classes: you need to extract your photos with the Extractor,
 create thumbnails with the ThumbnailsCreator and generate a web page with the
 WebPageGenerator.
