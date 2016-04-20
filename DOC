@@ -64,32 +64,38 @@ The following formats are accepted:
     * RAR archives
     * XAR archives
 
-Extractor has only one constructor and it takes no arguments:
 
-    Extractor()
+Lets take a closer look at the Extractor class:
 
-Extractor has the following public methods:
+	class Extractor
+	{
+		...
 
-    void SetPathToUnpack(const char *)
+	public:
+		Extractor();
 
-    void SetPathToFile(const char *)
+		void SetPathToUnpack(const char *p)
+		void SetPathToFile(const char *p)
 
-    const char *GetPathToUnpack() const
+		const char *GetPathToUnpack() const
+		const char *GetPathToFile() const
 
-    const char *GetPathToFile() const
+		void Extract();
+	};
 
-    void Extract()
 
 After you have created the Extractor object you will need to set the path to the
 archive with photos (required) and the path where to unpack (not required). If
 you don't set the path where to unpack your archive it will be unpacked to the
 directory where your executable is.
 
+Then you call the Extract() method.
+
 
 THUMBNAILS CREATOR
 
 ThumbnailsCreator is a class with the main purpose to make thumbnails for your
-photos
+photos.
 
 The following formats for photos are accepted:
     * JPEG baseline & progressive (12 bpc/arithmetic not supported, same as stock IJG lib)
@@ -104,28 +110,79 @@ The following formats for photos are accepted:
     * PIC (Softimage PIC)
     * PNM (PPM and PGM binary only)
 
-ThumbnailsCreator has only one constructor and it takes no arguments:
 
-    ThumbnailsCreator()
+Lets take a closer look at the ThumbnailsCreator class:
 
-ThumbnailsCreator has the following public methods:
+	class ThumbnailsCreator
+	{
+		...
 
-    void SetPathToOriginals(const char *)
+	public:
 
-    void SetPathToThumbnails(const char *)
+		ThumbnailsCreator();
+		~ThumbnailsCreator();
 
-    const char *GetPathToOriginals() const
+		void SetPathToOriginals(const char *p)
+		void SetPathToThumbnails(const char *p)
 
-    const char *GetPathToThumbnails() const
+		const char *GetPathToOriginals() const
+		const char *GetPathToThumbnails() const
+		const List &GetOriginals() const
+		const List &GetThumbnails() const
 
-    void CreateThumbnails() const;
+		void CreateThumbnails();
+	};
+
 
 After you have created the ThumbnailsCreator object you will need to set the
-path to the original phots (required) and the path where to put thumbnails
+path to the original photos (required) and the path where to put thumbnails
 (not required). If you don't set the path where to put the thumbnails it will
 be put to the directory where your executable is.
+
+Then you call the CreateThumbnails() method.
+
+Important to know, that ThumbnailsCreator is going to take ALL THE PHOTOS that
+are contained in the folder you have set as the path_to_originals. But after
+creating the thumbnails ThumbnailsCreator has the list of absolute paths to
+original photos (GetOriginals) and the list of absolute paths to thumbnails
+(GetThumbnails). GetOriginals[i] original photo always matches the
+GetThumbnails[i] thumbnail.
 
 
 WEB PAGE GENERATOR
 
-//in development
+WebPageGenerator is a class with the main purpose to generate HTML page with
+your photos. The web page contains thumbnails. By clicking the thumbnail you
+are redirected to the photo in the original resolution.
+
+Lets take a closer look at the WebPageGenerator class:
+
+
+	class WebPageGenerator
+	{
+		...
+
+	public:
+		WebPageGenerator();
+		~WebPageGenerator();
+
+		void SetPageTitle(const char *t)
+		void SetPathToWebPage(const char *p)
+		void SetOriginals(const List &l)
+		void SetThumbnails(const List &l)
+
+		const char *GetPageTitle() const
+		const char *GetPathToWebPage() const
+
+		void GenerateWebPage();
+	};
+
+
+After you have created the WebPageGenerator object you will need to set the web
+page title (required), the path to web page being generated and the lists of
+paths to original photos and thumbnails (you can get those from the
+ThumbnailsCreator class).
+
+Then you call GenerateWebPage() method and after is's finished you have your
+web album page.
+
