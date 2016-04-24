@@ -1,8 +1,7 @@
 #ifndef EXTRACTOR_H_SENTRY
 #define EXTRACTOR_H_SENTRY
 
-typedef struct archive Archive;
-typedef struct archive_entry ArchiveEntry;
+#include "Common.h"
 
 
 class Extractor

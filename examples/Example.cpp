@@ -11,30 +11,15 @@ int main(int argc, const char **argv)
         return 0;
     }
 
-    try
-    {
-        Extractor extractor;
-        extractor.SetPathToFile(argv[1]);
-        extractor.SetPathToUnpack(argv[2]);
-        extractor.Extract();
+    WebAlbumParams params;
 
-        ThumbnailsCreator thmb_creator;
-        thmb_creator.SetPathToOriginals(argv[2]);
-        thmb_creator.SetPathToThumbnails(argv[3]);
-        thmb_creator.CreateThumbnails();
+    params.path_to_archive = argv[1];
+    params.path_to_unpack = argv[2];
+    params.path_to_thumbnails = argv[3];
+    params.web_page_title = "Hello, world!";
+    params.path_to_webpage = argv[4];
 
-        WebPageGenerator web_page_generator;
-        web_page_generator.SetPageTitle("Hello, world");
-		web_page_generator.SetOriginals(thmb_creator.GetOriginals());
-		web_page_generator.SetThumbnails(thmb_creator.GetThumbnails());
-        web_page_generator.SetPathToWebPage(argv[4]);
-        web_page_generator.GenerateWebPage();
-
-    }
-    catch (Exception &ex)
-    {
-        ex.Print();
-    }
+    WebAlbumCreator::CreateWebAlbum(params);
 
     return 0;
 }

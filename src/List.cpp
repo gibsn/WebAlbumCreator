@@ -79,8 +79,8 @@ void List::Append(char *s)
 
 char *List::GetNext()
 {
-	if (!head)
-		return 0;
+    if (!head)
+        return 0;
 
     if (!curr)
     {

@@ -2,6 +2,8 @@
 #define COMMON_H_SENTRY
 
 typedef struct dirent DirEnt;
+typedef struct archive Archive;
+typedef struct archive_entry ArchiveEntry;
 typedef unsigned char Img;
 
 

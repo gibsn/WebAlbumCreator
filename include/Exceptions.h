@@ -1,8 +1,7 @@
 #ifndef EXCEPTIONS_H_SENTRY
 #define EXCEPTIONS_H_SENTRY
 
-typedef struct archive Archive;
-typedef struct archive_entry ArchiveEntry;
+#include "Common.h"
 
 
 class Exception
@@ -122,8 +121,8 @@ class NoPathToThumbnails : public UserEx
 {
 
 public:
-	NoPathToThumbnails() {};
-	void Print();
+    NoPathToThumbnails() {};
+    void Print();
 };
 
 

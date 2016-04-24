@@ -1,12 +1,12 @@
 /*
 **  TODO
 **      Decrease size of thumbnails
-**		Add ability to manually choose resolution
+**      Add ability to manually choose resolution
 **      Make path exceptions more informative
-**		Make exceptions for WebPageGenerator
-**		Make css variable
+**      Make exceptions for WebPageGenerator
+**      Make css variable
+**      Move paths creation to static method of main class
 */
-
 
 #ifndef WEB_ALBUM_CREATOR_H_SENTRY
 #define WEB_ALBUM_CREATOR_H_SENTRY
@@ -17,8 +17,25 @@
 #include "Exceptions.h"
 
 
-typedef struct archive Archive;
-typedef struct archive_entry ArchiveEntry;
+struct WebAlbumParams
+{
+    const char *path_to_archive;
+    const char *path_to_unpack;
+    const char *path_to_thumbnails;
+    const char *web_page_title;
+    const char *path_to_webpage;
+};
+
+
+class WebAlbumCreator
+{
+
+public:
+    WebAlbumCreator() {};
+    ~WebAlbumCreator() {};
+
+    static void CreateWebAlbum(const WebAlbumParams &);
+};
 
 
 #endif

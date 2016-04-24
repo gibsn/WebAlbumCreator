@@ -18,7 +18,7 @@ class ThumbnailsCreator
     void ProcessImage(const char *);
     void ProcessDirectory(const char *);
     int IsDir(const char *) const;
-	int IsOrdinaryFile (const char *) const;
+    int IsOrdinaryFile (const char *) const;
     char *CreatePathForResized(const char *) const;
 
 public:
@@ -26,9 +26,9 @@ public:
     ~ThumbnailsCreator();
 
     void SetPathToOriginals(const char *p)
-        {path_to_originals = realpath(p, 0); }
+        { path_to_originals = realpath(p, 0); }
     void SetPathToThumbnails(const char *p)
-        {path_to_thumbnails = realpath(p, 0); }
+        { path_to_thumbnails = realpath(p, 0); }
 
     const char *GetPathToOriginals() const { return path_to_originals; }
     const char *GetPathToThumbnails() const { return path_to_thumbnails; }

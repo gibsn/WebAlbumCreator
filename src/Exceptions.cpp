@@ -84,7 +84,7 @@ void WrongPathToThumbnails::Print()
 
 void NoPathToThumbnails::Print()
 {
-	fprintf(stderr, "You haven't entered any path where to store the thumbnails\n");
+    fprintf(stderr, "You haven't entered any path where to store the thumbnails\n");
 }
 
 
