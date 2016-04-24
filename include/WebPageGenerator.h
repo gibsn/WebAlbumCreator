@@ -10,10 +10,11 @@
 \n\
 <html>\n\
 <head>\n\
+    <meta charset=\"utf-8\">\n\
     <title>\n\
         %s\n\
     </title>\n\
-<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\" />\n\
+<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">\n\
 </head>\n\
 <body>\n\
 <div class=\"album\">\n\
@@ -22,7 +23,7 @@
 #define PAGE_IMAGE "\
 <a href=\"%s\">\n\
     <div class=\"photo_box\">\n\
-        <img src=\"%s\" />\n\
+        <img src=\"%s\" alt=\"%s\">\n\
     </div>\n\
 </a>\n\
 "

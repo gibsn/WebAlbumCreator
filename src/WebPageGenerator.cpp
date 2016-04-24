@@ -55,9 +55,9 @@ void WebPageGenerator::GenerateWebPage()
         (src_name = originals.GetNext()) &&
         (thmb_name = thumbnails.GetNext()))
     {
-        int length = strlen(PAGE_IMAGE) + strlen(src_name) + strlen(thmb_name);
+        int length = strlen(PAGE_IMAGE) + strlen(src_name) + 2 * strlen(thmb_name);
         char *buf = new char[length];
-        sprintf(buf, PAGE_IMAGE, src_name, thmb_name);
+        sprintf(buf, PAGE_IMAGE, src_name, thmb_name, thmb_name);
         write(fd, buf, strlen(buf));
 
         delete [] buf;

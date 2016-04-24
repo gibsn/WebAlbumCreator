@@ -27,17 +27,54 @@ There are some examples coming with the library (you can find them in the
 
 QUICK START
 
-The library contains three main classes:
+The library contains four main classes:
     1) Extractor
     2) ThumbnailsCreator
     3) WebPageGenerator
+    4) WebAlbumCreator
 
-So the entire algorithm to create a web page with your photos is as simple as
-using these three classes: you need to extract your photos with the Extractor,
-create thumbnails with the ThumbnailsCreator and generate a web page with the
-WebPageGenerator.
+WebAlbumCreator is a kind of dispatcher class that handles the Extractor,
+ ThumbnailsGenerator and WebAlbumCreator classes. In most cases you will need
+ just the CreateWebAlbum() method from the WebAlbumCreator class that will do
+ everything for you. Let's take a closer look:
 
-Just include the 'WebAlbumCreator.h' and link with the -l wac
+class WebAlbumCreator
+{
+    ...
+
+public:
+    WebAlbumCreator();
+    ~WebAlbumCreator();
+
+    static void CreateWebAlbum(const WebAlbumParams &);
+};
+
+It takes the following structure as the only parameter:
+
+struct WebAlbumParams
+{
+    const char *path_to_archive;    //required
+    const char *path_to_unpack;     //recommended
+    const char *path_to_thumbnails; //recommended
+    const char *web_page_title;     //required
+    const char *path_to_webpage;    //required
+};
+
+You just need to call the CreateWebAlbum method with the
+pre-filled WebAlbumParams structure as the parameter.
+
+You can find out what happens if you dont provide the 'recommended' parameteres
+in the next sections.
+
+Dont forget to include the 'WebAlbumCreator.h' and link with the -l wac
+
+
+WE NEED TO GO DEEPER
+
+The entire algorithm hidden in the CreateWebAlbum method is actually as simple
+as using the first three classes: you need to extract your photos with the
+Extractor, create thumbnails with the ThumbnailsCreator and generate a web page
+with the WebPageGenerator.
 
 
 EXTRACTOR
@@ -65,23 +102,23 @@ The following formats are accepted:
     * XAR archives
 
 
-Lets take a closer look at the Extractor class:
+Let's take a closer look at the Extractor class:
 
-	class Extractor
-	{
-		...
+    class Extractor
+    {
+        ...
 
-	public:
-		Extractor();
+    public:
+        Extractor();
 
-		void SetPathToUnpack(const char *p)
-		void SetPathToFile(const char *p)
+        void SetPathToUnpack(const char *p)
+        void SetPathToFile(const char *p)
 
-		const char *GetPathToUnpack() const
-		const char *GetPathToFile() const
+        const char *GetPathToUnpack() const
+        const char *GetPathToFile() const
 
-		void Extract();
-	};
+        void Extract();
+    };
 
 
 After you have created the Extractor object you will need to set the path to the
@@ -111,27 +148,27 @@ The following formats for photos are accepted:
     * PNM (PPM and PGM binary only)
 
 
-Lets take a closer look at the ThumbnailsCreator class:
+Let's take a closer look at the ThumbnailsCreator class:
 
-	class ThumbnailsCreator
-	{
-		...
+    class ThumbnailsCreator
+    {
+        ...
 
-	public:
+    public:
 
-		ThumbnailsCreator();
-		~ThumbnailsCreator();
+        ThumbnailsCreator();
+        ~ThumbnailsCreator();
 
-		void SetPathToOriginals(const char *p)
-		void SetPathToThumbnails(const char *p)
+        void SetPathToOriginals(const char *p)
+        void SetPathToThumbnails(const char *p)
 
-		const char *GetPathToOriginals() const
-		const char *GetPathToThumbnails() const
-		const List &GetOriginals() const
-		const List &GetThumbnails() const
+        const char *GetPathToOriginals() const
+        const char *GetPathToThumbnails() const
+        const List &GetOriginals() const
+        const List &GetThumbnails() const
 
-		void CreateThumbnails();
-	};
+        void CreateThumbnails();
+    };
 
 
 After you have created the ThumbnailsCreator object you will need to set the
@@ -155,27 +192,27 @@ WebPageGenerator is a class with the main purpose to generate HTML page with
 your photos. The web page contains thumbnails. By clicking the thumbnail you
 are redirected to the photo in the original resolution.
 
-Lets take a closer look at the WebPageGenerator class:
+Let's take a closer look at the WebPageGenerator class:
 
 
-	class WebPageGenerator
-	{
-		...
+    class WebPageGenerator
+    {
+        ...
 
-	public:
-		WebPageGenerator();
-		~WebPageGenerator();
+    public:
+        WebPageGenerator();
+        ~WebPageGenerator();
 
-		void SetPageTitle(const char *t)
-		void SetPathToWebPage(const char *p)
-		void SetOriginals(const List &l)
-		void SetThumbnails(const List &l)
+        void SetPageTitle(const char *t)
+        void SetPathToWebPage(const char *p)
+        void SetOriginals(const List &l)
+        void SetThumbnails(const List &l)
 
-		const char *GetPageTitle() const
-		const char *GetPathToWebPage() const
+        const char *GetPageTitle() const
+        const char *GetPathToWebPage() const
 
-		void GenerateWebPage();
-	};
+        void GenerateWebPage();
+    };
 
 
 After you have created the WebPageGenerator object you will need to set the web
