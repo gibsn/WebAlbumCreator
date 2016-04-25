@@ -182,8 +182,8 @@ Important to know, that ThumbnailsCreator is going to take ALL THE PHOTOS that
 are contained in the folder you have set as the path_to_originals. But after
 creating the thumbnails ThumbnailsCreator has the list of absolute paths to
 original photos (GetOriginals) and the list of absolute paths to thumbnails
-(GetThumbnails). GetOriginals[i] original photo always matches the
-GetThumbnails[i] thumbnail.
+(GetThumbnails). GetOriginals()[i] original photo always matches the
+GetThumbnails()[i] thumbnail.
 
 
 WEB PAGE GENERATOR
@@ -216,9 +216,9 @@ Let's take a closer look at the WebPageGenerator class:
 
 
 After you have created the WebPageGenerator object you will need to set the web
-page title (required), the path to web page being generated (required) and the lists of
-paths to original photos and thumbnails (required, you can get those from the
-ThumbnailsCreator class).
+page title (required), the path to web page being generated (required) and the
+lists of paths to original photos and thumbnails (required, you can get those
+from the ThumbnailsCreator class).
 
 Then you call GenerateWebPage() method and after is's finished you have your
 web album page.
