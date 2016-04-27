@@ -1,6 +1,8 @@
 CXX = g++
 CXXFLAGS = -g -Wall
 CXXFLAGS += -Wno-unused-variable -Wno-unused-value -std=c++98
+#Needed for proper libarchive work
+CXXFLAGS += -D_FILE_OFFSET_BITS=64
 
 SRC_DIR = src
 INCLUDE_DIR = include

@@ -16,7 +16,7 @@ STB_DIR = ../$(EXTERNALS_BASEDIR)/stb
 libarchive:
 	echo "Compiling libarchive-2.8.5"
 	cd $(LIBARCHIVE_DIR) && ./configure $(WITHOUT_FLAGS)
-	make -C $(LIBARCHIVE_DIR) -f Makefile
+	make -C $(LIBARCHIVE_DIR) -f Makefile CFLAGS+=-D_FILE_OFFSET_BITS=64
 	cp $(LIBARCHIVE_DIR)/.libs/$(LIBARCHIVE_STATIC) $(LIBRARY_DIR)/
 	cp $(LIBARCHIVE_DIR)/config.h $(INCLUDE_DIR)/
 	cp $(LIBARCHIVE_DIR)/libarchive/archive.h $(INCLUDE_DIR)/
