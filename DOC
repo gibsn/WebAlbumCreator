@@ -53,11 +53,13 @@ It takes the following structure as the only parameter:
 
 struct WebAlbumParams
 {
-    const char *path_to_archive;    //required
-    const char *path_to_unpack;     //recommended
-    const char *path_to_thumbnails; //recommended
-    const char *web_page_title;     //required
-    const char *path_to_webpage;    //required
+    const char *path_to_archive;             //required
+    const char *path_to_unpack;              //recommended
+    const char *path_to_thumbnails;          //recommended
+    const char *web_page_title;              //required
+    const char *path_to_webpage;             //required
+    const char *relative_path_to_originals;  //required
+    const char *relative_path_to_thumbnails; //required
 };
 
 You just need to call the CreateWebAlbum method with the
@@ -111,11 +113,11 @@ Let's take a closer look at the Extractor class:
     public:
         Extractor();
 
-        void SetPathToUnpack(const char *p)
-        void SetPathToFile(const char *p)
+        void SetPathToUnpack(const char *p);
+        void SetPathToFile(const char *p);
 
-        const char *GetPathToUnpack() const
-        const char *GetPathToFile() const
+        const char *GetPathToUnpack() const;
+        const char *GetPathToFile() const;
 
         void Extract();
     };
@@ -159,13 +161,13 @@ Let's take a closer look at the ThumbnailsCreator class:
         ThumbnailsCreator();
         ~ThumbnailsCreator();
 
-        void SetPathToOriginals(const char *p)
-        void SetPathToThumbnails(const char *p)
+        void SetPathToOriginals(const char *p);
+        void SetPathToThumbnails(const char *p);
 
-        const char *GetPathToOriginals() const
-        const char *GetPathToThumbnails() const
-        const List &GetOriginals() const
-        const List &GetThumbnails() const
+        const char *GetPathToOriginals() const;
+        const char *GetPathToThumbnails() const;
+        const List &GetOriginalsNames() const;
+        const List &GetThumbnailsNames() const;
 
         void CreateThumbnails();
     };
@@ -180,10 +182,10 @@ Then you call the CreateThumbnails() method.
 
 Important to know, that ThumbnailsCreator is going to take ALL THE PHOTOS that
 are contained in the folder you have set as the path_to_originals. But after
-creating the thumbnails ThumbnailsCreator has the list of absolute paths to
-original photos (GetOriginals) and the list of absolute paths to thumbnails
-(GetThumbnails). GetOriginals()[i] original photo always matches the
-GetThumbnails()[i] thumbnail.
+creating the thumbnails ThumbnailsCreator has the list of paths to original
+photos (relatively to path_to_originals) and the list of paths to thumbnails.
+GetOriginals()[i] original photo always matches the GetThumbnails()[i]
+thumbnail.
 
 
 WEB PAGE GENERATOR
@@ -203,22 +205,25 @@ Let's take a closer look at the WebPageGenerator class:
         WebPageGenerator();
         ~WebPageGenerator();
 
-        void SetPageTitle(const char *t)
-        void SetPathToWebPage(const char *p)
-        void SetOriginals(const List &l)
-        void SetThumbnails(const List &l)
+        void SetPageTitle(const char *t);
+        void SetPathToWebPage(const char *p);
+        void SetOriginals(const List &l);
+        void SetThumbnails(const List &l);
+        void SetPathToOriginals(const char *p);
+        void SetPathToThumbnails(const char *p);
 
-        const char *GetPageTitle() const
-        const char *GetPathToWebPage() const
+        const char *GetPageTitle() const;
+        const char *GetPathToWebPage() const;
 
         void GenerateWebPage();
     };
 
 
 After you have created the WebPageGenerator object you will need to set the web
-page title (required), the path to web page being generated (required) and the
-lists of paths to original photos and thumbnails (required, you can get those
-from the ThumbnailsCreator class).
+page title (required), the path to web page being generated (required), paths to
+original photos and thumbnails (relatively to the directory where the web page
+is being generated) and the lists of paths to original photos and thumbnails
+(required, you can get those from the ThumbnailsCreator class).
 
 Then you call GenerateWebPage() method and after is's finished you have your
 web album page.
