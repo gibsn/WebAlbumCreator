@@ -10,8 +10,8 @@ class ThumbnailsCreator
 {
     char *path_to_originals;
     char *path_to_thumbnails;
-    List originals;
-    List thumbnails;
+    List originals_names;
+    List thumbnails_names;
 
     void CheckPaths() const;
     char *ResizeAndSave(const char *) const;
@@ -32,8 +32,8 @@ public:
 
     const char *GetPathToOriginals() const { return path_to_originals; }
     const char *GetPathToThumbnails() const { return path_to_thumbnails; }
-    const List &GetOriginals() const { return originals; }
-    const List &GetThumbnails() const { return thumbnails; }
+    const List &GetOriginalsNames() const { return originals_names; }
+    const List &GetThumbnailsNames() const { return thumbnails_names; }
 
     void CreateThumbnails();
 };

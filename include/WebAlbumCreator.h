@@ -4,6 +4,7 @@
 **      Add ability to manually choose resolution
 **      Make path exceptions more informative
 **      Make exceptions for WebPageGenerator
+**      Make exceptions for WebAlbumCreator
 **      Make css variable
 **      Move paths creation to static method of main class
 */
@@ -24,6 +25,8 @@ struct WebAlbumParams
     const char *path_to_thumbnails;
     const char *web_page_title;
     const char *path_to_webpage;
+    const char *relative_path_to_originals;
+    const char *relative_path_to_thumbnails;
 };
 
 

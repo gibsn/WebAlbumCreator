@@ -115,8 +115,11 @@ void ThumbnailsCreator::ProcessImage(const char *path)
 {
     char *thmb_name = ResizeAndSave(path);
 
-    thumbnails.Append(realpath(thmb_name, 0));
-    originals.Append(realpath(path, 0));
+    thumbnails_names.Append(strdup(strrchr(thmb_name, '/') + 1));
+
+    char *relative_path =
+        strstr(path, path_to_originals) + strlen(path_to_originals);
+    originals_names.Append(strdup(relative_path + 1));
 
     free(thmb_name);
 }

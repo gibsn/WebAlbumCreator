@@ -17,8 +17,10 @@ void WebAlbumCreator::CreateWebAlbum(const WebAlbumParams &params)
 
         WebPageGenerator web_page_generator;
         web_page_generator.SetPageTitle(params.web_page_title);
-        web_page_generator.SetOriginals(thmb_creator.GetOriginals());
-        web_page_generator.SetThumbnails(thmb_creator.GetThumbnails());
+        web_page_generator.SetOriginalsNames(thmb_creator.GetOriginalsNames());
+        web_page_generator.SetThumbnailsNames(thmb_creator.GetThumbnailsNames());
+        web_page_generator.SetPathToOriginals(params.relative_path_to_originals);
+        web_page_generator.SetPathToThumbnails(params.relative_path_to_thumbnails);
         web_page_generator.SetPathToWebPage(params.path_to_webpage);
         web_page_generator.GenerateWebPage();
 

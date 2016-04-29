@@ -39,8 +39,10 @@ class WebPageGenerator
     char *page_title;
     const char *path_to_web_page;
     int fd;
-    List originals;
-    List thumbnails;
+    List originals_names;
+    List thumbnails_names;
+    const char *path_to_originals;
+    const char *path_to_thumbnails;
 
     void InitWebPage() const;
     void FinishWebPage() const;
@@ -51,8 +53,10 @@ public:
 
     void SetPageTitle(const char *t) { page_title = strdup(t); }
     void SetPathToWebPage(const char *p) { path_to_web_page = p; }
-    void SetOriginals(const List &l) { originals = l; }
-    void SetThumbnails(const List &l) { thumbnails = l; }
+    void SetOriginalsNames(const List &l) { originals_names = l; }
+    void SetThumbnailsNames(const List &l) { thumbnails_names = l; }
+    void SetPathToOriginals(const char *p) { path_to_originals = p; }
+    void SetPathToThumbnails(const char *p) { path_to_thumbnails = p; }
 
     const char *GetPageTitle() const { return page_title; }
     const char *GetPathToWebPage() const { return path_to_web_page; }
