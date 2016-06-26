@@ -135,5 +135,12 @@ public:
     void Print();
 };
 
+class WrongPathToWebPage: public UserEx
+{
+
+public:
+	WrongPathToWebPage() {};
+	void Print();
+};
 
 #endif

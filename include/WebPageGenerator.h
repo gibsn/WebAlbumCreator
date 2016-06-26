@@ -5,45 +5,19 @@
 
 #include "List.h"
 
-#define PAGE_HEAD "\
-<!DOCTYPE html>\n\
-\n\
-<html>\n\
-<head>\n\
-    <meta charset=\"utf-8\">\n\
-    <title>\n\
-        %s\n\
-    </title>\n\
-<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">\n\
-</head>\n\
-<body>\n\
-<div class=\"album\">\n\
-"
-
-#define PAGE_IMAGE "\
-<a href=\"%s\">\n\
-    <div class=\"photo_box\">\n\
-        <img src=\"%s\" alt=\"%s\">\n\
-    </div>\n\
-</a>\n\
-"
-
-#define PAGE_BOTTOM "\
-</div>\n\
-</body>\n\
-</html>"
-
 
 class WebPageGenerator
 {
-    char *page_title;
+    const char *page_title;
     const char *path_to_web_page;
+    const char *path_to_css;
     int fd;
     List originals_names;
     List thumbnails_names;
     const char *path_to_originals;
     const char *path_to_thumbnails;
 
+    void CheckParams();
     void InitWebPage() const;
     void FinishWebPage() const;
 
@@ -52,6 +26,7 @@ public:
     ~WebPageGenerator();
 
     void SetPageTitle(const char *t) { page_title = strdup(t); }
+    void SetPathToCss(const char *t) { path_to_css = t; }
     void SetPathToWebPage(const char *p) { path_to_web_page = p; }
     void SetOriginalsNames(const List &l) { originals_names = l; }
     void SetThumbnailsNames(const List &l) { thumbnails_names = l; }

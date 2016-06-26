@@ -22,6 +22,7 @@ void WebAlbumCreator::CreateWebAlbum(const WebAlbumParams &params)
         web_page_generator.SetPathToOriginals(params.relative_path_to_originals);
         web_page_generator.SetPathToThumbnails(params.relative_path_to_thumbnails);
         web_page_generator.SetPathToWebPage(params.path_to_webpage);
+        web_page_generator.SetPathToCss(params.path_to_css);
         web_page_generator.GenerateWebPage();
 
     }

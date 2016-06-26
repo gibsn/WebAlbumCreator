@@ -15,7 +15,7 @@ char *StrCatAlloc(char *s1, const char *s2)
 bool IsImage(const char *name)
 {
     char *c;
-    if (!(c = strrchr(name, '.')))
+    if (!(c = (char *)strrchr(name, '.')))
         return false;
 
     if (c == name + strlen(name) - 1 ||

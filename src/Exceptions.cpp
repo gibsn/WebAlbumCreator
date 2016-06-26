@@ -100,3 +100,9 @@ void CorruptedImage::Print()
 {
     printf("Corrupted image %s\n", text);
 }
+
+
+void WrongPathToWebPage::Print()
+{
+    fprintf(stderr, "You have entered the wrong path to web page\n");
+}
