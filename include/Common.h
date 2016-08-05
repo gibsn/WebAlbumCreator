@@ -8,7 +8,7 @@ typedef unsigned char Img;
 
 
 char *StrCatAlloc(char *, const char *);
-int IsImage(const char *);
+bool IsImage(const char *);
 
 
 #endif

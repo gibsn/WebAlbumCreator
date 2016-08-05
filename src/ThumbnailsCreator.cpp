@@ -58,8 +58,7 @@ char *ThumbnailsCreator::CreatePathForResized(const char *img_path) const
     char *extension = strrchr(resized_path, '.');
     *extension = '\0';
 
-    resized_path = StrCatAlloc(resized_path, "_resized");
-    resized_path = StrCatAlloc(resized_path, ".png");
+    resized_path = StrCatAlloc(resized_path, "_resized.png");
 
     return resized_path;
 }
@@ -95,7 +94,7 @@ char *ThumbnailsCreator::ResizeAndSave(const char *img_path) const
 }
 
 
-int ThumbnailsCreator::IsDir(const char *dir) const
+bool ThumbnailsCreator::IsDir(const char *dir) const
 {
     DIR *n = opendir(dir);
     if (n)
@@ -105,7 +104,7 @@ int ThumbnailsCreator::IsDir(const char *dir) const
 }
 
 
-int ThumbnailsCreator::IsOrdinaryFile(const char *name) const
+bool ThumbnailsCreator::IsOrdinaryFile(const char *name) const
 {
     return name[0] != '.';
 }
@@ -118,7 +117,7 @@ void ThumbnailsCreator::ProcessImage(const char *path)
     thumbnails_names.Append(strdup(strrchr(thmb_name, '/') + 1));
 
     char *relative_path =
-        strstr(path, path_to_originals) + strlen(path_to_originals);
+        (char *)strstr(path, path_to_originals) + strlen(path_to_originals);
     originals_names.Append(strdup(relative_path + 1));
 
     free(thmb_name);

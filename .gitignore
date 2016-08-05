@@ -9,10 +9,12 @@ obj/
 *.zip
 *.sublime-project
 *.sublime-workspace
+.clang_complete
 photos/
 thumbnails/
 web_pages/
 libwac.a
+tags
 
 externals/libarchive-2.8.5/
 

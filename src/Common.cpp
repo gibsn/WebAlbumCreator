@@ -12,21 +12,20 @@ char *StrCatAlloc(char *s1, const char *s2)
 }
 
 
-int IsImage(const char *name)
+bool IsImage(const char *name)
 {
-    int i = strlen(name);
-    while (name[i] != '.' && i >= 0)
-        --i;
-    if (i < 0)
-        return 0;
+    char *c;
+    if (!(c = strrchr(name, '.')))
+        return false;
 
-    if (strcmp(name + i + 1, "jpg") == 0 ||
-        strcmp(name + i + 1, "JPG") == 0 ||
-        strcmp(name + i + 1, "bmp") == 0 ||
-        strcmp(name + i + 1, "BMP") == 0 ||
-        strcmp(name + i + 1, "png") == 0 ||
-        strcmp(name + i + 1, "PNG") == 0)
-        return 1;
+    if (c == name + strlen(name) - 1 ||
+        strcmp(c + 1, "jpg") == 0    ||
+        strcmp(c + 1, "JPG") == 0    ||
+        strcmp(c + 1, "bmp") == 0    ||
+        strcmp(c + 1, "BMP") == 0    ||
+        strcmp(c + 1, "png") == 0    ||
+        strcmp(c + 1, "PNG") == 0)
+        return true;
     else
-        return 0;
+        return false;
 }

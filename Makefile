@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -g -Wall
-CXXFLAGS += -Wno-unused-variable -Wno-unused-value -std=c++98
+CXXFLAGS += -Wno-unused-variable -Wno-unused-value -std=c++98 -fpermissive
 #Needed for proper libarchive work
 CXXFLAGS += -D_FILE_OFFSET_BITS=64
 
@@ -25,7 +25,7 @@ LDFLAGS += -l archive -l z
 
 src_to_obj = $(addprefix $(OBJ_DIR)/, $(notdir $(1:.cpp=.o)))
 
-example: examples/Example.cpp $(OBJ_MODULES)
+Example: examples/Example.cpp $(OBJ_MODULES)
 	$(CXX) $(CXXFLAGS) examples/Example.cpp $(OBJ_MODULES) -o Example $(LDFLAGS)
 
 static: $(STATIC_LIB)
@@ -65,4 +65,7 @@ clean:
 	rm -rf $(STATIC_LIB)
 	make -C $(dir $(BRIDGE_DIR)/Makefile) -f Makefile clean
 
-.PHONY: all clean
+clangcomp:
+	@echo $(CXXFLAGS) | sed -e 's/ -/\n-/g' | grep -v 'Werror' > .clang_complete
+
+.PHONY: clangcomp all clean
