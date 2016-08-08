@@ -2,9 +2,10 @@
 **  TODO
 **      Decrease size of thumbnails
 **      Add ability to manually choose resolution
-**      Make path exceptions more informative
 **      Make exceptions for WebAlbumCreator
 **      Move paths creation to static method of main class
+**      Refactor main class
+**      List.h
 */
 
 #ifndef WEB_ALBUM_CREATOR_H_SENTRY

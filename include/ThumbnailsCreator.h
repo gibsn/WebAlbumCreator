@@ -8,8 +8,8 @@
 
 class ThumbnailsCreator
 {
-    char *path_to_originals;
-    char *path_to_thumbnails;
+    const char *path_to_originals;
+    const char *path_to_thumbnails;
     List originals_names;
     List thumbnails_names;
 
@@ -23,12 +23,9 @@ class ThumbnailsCreator
 
 public:
     ThumbnailsCreator();
-    ~ThumbnailsCreator();
 
-    void SetPathToOriginals(const char *p)
-        { path_to_originals = realpath(p, 0); }
-    void SetPathToThumbnails(const char *p)
-        { path_to_thumbnails = realpath(p, 0); }
+    void SetPathToOriginals(const char *p) { path_to_originals = p; }
+    void SetPathToThumbnails(const char *p) { path_to_thumbnails = p; }
 
     const char *GetPathToOriginals() const { return path_to_originals; }
     const char *GetPathToThumbnails() const { return path_to_thumbnails; }

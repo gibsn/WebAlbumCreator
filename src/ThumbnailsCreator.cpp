@@ -42,7 +42,7 @@ void ThumbnailsCreator::CheckParams()
         closedir(dir);
     } else
     {
-        path_to_thumbnails = strdup(".");
+        path_to_thumbnails = ".";
     }
 }
 
@@ -152,13 +152,4 @@ void ThumbnailsCreator::CreateThumbnails()
 {
     CheckParams();
     ProcessDirectory(path_to_originals);
-}
-
-
-ThumbnailsCreator::~ThumbnailsCreator()
-{
-    if (path_to_originals)
-        free(path_to_originals);
-    if (path_to_thumbnails)
-        free(path_to_thumbnails);
 }
