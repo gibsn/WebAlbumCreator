@@ -13,8 +13,7 @@ class Extractor
     Archive *SetUpRead() const;
     Archive *SetUpWrite() const;
     void SetUpPathToUnpack(ArchiveEntry *);
-    void CreatePhotosDir();
-    void CheckPaths();
+    void CheckParams();
     void Finish(Archive *, Archive *) const;
 
 public:

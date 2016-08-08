@@ -1,6 +1,19 @@
 #include "WebAlbumCreator.h"
 
 
+WebAlbumParams::WebAlbumParams()
+    : path_to_archive(0),
+    path_to_unpack(0),
+    path_to_thumbnails(0),
+    web_page_title(0),
+    path_to_webpage(0),
+    path_to_css(0),
+    relative_path_to_originals(0),
+    relative_path_to_thumbnails(0)
+{
+}
+
+
 void WebAlbumCreator::CreateWebAlbum(const WebAlbumParams &params)
 {
     try
@@ -11,7 +24,7 @@ void WebAlbumCreator::CreateWebAlbum(const WebAlbumParams &params)
         extractor.Extract();
 
         ThumbnailsCreator thmb_creator;
-        thmb_creator.SetPathToOriginals(params.path_to_unpack);
+        thmb_creator.SetPathToOriginals(extractor.GetPathToUnpack());
         thmb_creator.SetPathToThumbnails(params.path_to_thumbnails);
         thmb_creator.CreateThumbnails();
 

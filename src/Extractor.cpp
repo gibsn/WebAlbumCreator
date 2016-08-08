@@ -55,21 +55,12 @@ void Extractor::SetUpPathToUnpack(ArchiveEntry *entry)
     output_path = strcat(output_path, filename);
     archive_entry_set_pathname(entry, output_path);
 
-    if (filename)
-        free(filename);
-    if (output_path)
-        delete[] output_path;
+    free(filename);
+    delete[] output_path;
 }
 
 
-void Extractor::CreatePhotosDir()
-{
-    if (path_to_unpack == 0)
-        path_to_unpack = "photos";
-}
-
-
-void Extractor::CheckPaths()
+void Extractor::CheckParams()
 {
     if (path_to_file == 0)
         throw NoPathToArchive();
@@ -84,6 +75,9 @@ void Extractor::CheckPaths()
         if (dir == 0)
             throw WrongPathToUnpack();
         closedir(dir);
+    } else
+    {
+        path_to_unpack = ".";
     }
 }
 
@@ -102,7 +96,7 @@ void Extractor::Extract()
     ArchiveEntry *entry;
     int r;
 
-    CheckPaths();
+    CheckParams();
 
     Archive *in = SetUpRead();
     Archive *out = SetUpWrite();
@@ -117,8 +111,9 @@ void Extractor::Extract()
             break;
         if (r == ARCHIVE_FATAL)
             throw LibArchiveEx(in);
-        if (path_to_unpack)
-            SetUpPathToUnpack(entry);
+
+        SetUpPathToUnpack(entry);
+
         r = archive_write_header(out, entry);
         if (r == ARCHIVE_FATAL)
             throw LibArchiveEx(in);

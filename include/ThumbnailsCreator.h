@@ -13,7 +13,7 @@ class ThumbnailsCreator
     List originals_names;
     List thumbnails_names;
 
-    void CheckPaths() const;
+    void CheckParams();
     char *ResizeAndSave(const char *) const;
     void ProcessImage(const char *);
     void ProcessDirectory(const char *);

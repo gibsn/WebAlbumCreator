@@ -26,6 +26,8 @@ struct WebAlbumParams
     const char *path_to_css;
     const char *relative_path_to_originals;
     const char *relative_path_to_thumbnails;
+
+    WebAlbumParams();
 };
 
 

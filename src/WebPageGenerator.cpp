@@ -38,21 +38,24 @@
 
 
 WebPageGenerator::WebPageGenerator()
-    : page_title(0)
+    : page_title(0),
+    path_to_web_page(0),
+    path_to_css(0),
+    path_to_originals(0),
+    path_to_thumbnails(0)
 {}
-
-
-WebPageGenerator::~WebPageGenerator()
-{
-    // if (page_title)
-    //     free(page_title);
-}
 
 
 void WebPageGenerator::CheckParams()
 {
     if (!page_title)
         page_title = "Photoalbum";
+    if (!path_to_web_page)
+        throw NoPathToWebPage();
+    if (!path_to_originals)
+        throw NoPathToOriginals();
+    if (!path_to_thumbnails)
+        throw NoPathToThumbnails();
     if (!path_to_css)
         path_to_css = "";
 }

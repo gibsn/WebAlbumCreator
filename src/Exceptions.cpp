@@ -106,3 +106,9 @@ void WrongPathToWebPage::Print()
 {
     fprintf(stderr, "You have entered the wrong path to web page\n");
 }
+
+
+void NoPathToWebPage::Print()
+{
+	fprintf(stderr, "You have not specified the path to web page\n");
+}

@@ -24,7 +24,7 @@ ThumbnailsCreator::ThumbnailsCreator()
 {}
 
 
-void ThumbnailsCreator::CheckPaths() const
+void ThumbnailsCreator::CheckParams()
 {
     if (path_to_originals == 0)
         throw NoPathToOriginals();
@@ -34,15 +34,15 @@ void ThumbnailsCreator::CheckPaths() const
         throw WrongPathToOriginals();
     closedir(dir);
 
-    if (path_to_thumbnails == 0)
-        throw NoPathToThumbnails();
-
     if (path_to_thumbnails)
     {
         dir = opendir(path_to_thumbnails);
         if (dir == 0)
             throw WrongPathToThumbnails();
         closedir(dir);
+    } else
+    {
+        path_to_thumbnails = strdup(".");
     }
 }
 
@@ -112,14 +112,13 @@ bool ThumbnailsCreator::IsOrdinaryFile(const char *name) const
 
 void ThumbnailsCreator::ProcessImage(const char *path)
 {
-    char *thmb_name = ResizeAndSave(path);
-
-    thumbnails_names.Append(strdup(strrchr(thmb_name, '/') + 1));
-
     char *relative_path =
         (char *)strstr(path, path_to_originals) + strlen(path_to_originals);
     originals_names.Append(strdup(relative_path + 1));
 
+    char *thmb_name = ResizeAndSave(path);
+
+    thumbnails_names.Append(strdup(strrchr(thmb_name, '/') + 1));
     free(thmb_name);
 }
 
@@ -151,7 +150,7 @@ void ThumbnailsCreator::ProcessDirectory(const char *path)
 
 void ThumbnailsCreator::CreateThumbnails()
 {
-    CheckPaths();
+    CheckParams();
     ProcessDirectory(path_to_originals);
 }
 

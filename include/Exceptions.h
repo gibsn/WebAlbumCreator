@@ -143,4 +143,13 @@ public:
 	void Print();
 };
 
+
+class NoPathToWebPage: public UserEx
+{
+
+public:
+	NoPathToWebPage() {};
+	void Print();
+};
+
 #endif
