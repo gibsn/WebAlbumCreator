@@ -17,8 +17,8 @@ STATIC_LIB = libwac.a
 
 BRIDGE_TARGETS = libarchive zlib stb
 
-CXXFLAGS += -I $(INCLUDE_DIR)
-CXXFLAGS += -I $(BRIDGE_DIR)/include
+CXXFLAGS += -I$(INCLUDE_DIR)
+CXXFLAGS += -I$(BRIDGE_DIR)/include
 
 LDFLAGS = -L $(BRIDGE_DIR)/lib/
 LDFLAGS += -l archive -l z
@@ -50,7 +50,7 @@ bridge.touch:
 	mkdir -p $(BRIDGE_DIR)/lib
 	mkdir -p $(BRIDGE_DIR)/bin
 	make -C $(BRIDGE_DIR) -f Makefile $(BRIDGE_TARGETS)
-	echo "-include $(DEPS_MODULES)" > $@
+	@echo "-include $(DEPS_MODULES)" > $@
 
 clean:
 	rm -rf $(OBJ_DIR)
@@ -66,6 +66,6 @@ clean:
 	make -C $(dir $(BRIDGE_DIR)/Makefile) -f Makefile clean
 
 clangcomp:
-	@echo $(CXXFLAGS) | sed -e 's/ -/\n-/g' | grep -v 'Werror' > .clang_complete
+	@echo $(CXXFLAGS) | tr ' ' '\n' | grep -v 'Werror' > .clang_complete
 
-.PHONY: clangcomp all clean
+.PHONY: clangcomp clean

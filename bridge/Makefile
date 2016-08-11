@@ -14,7 +14,7 @@ STB_DIR = ../$(EXTERNALS_BASEDIR)/stb
 
 
 libarchive:
-	echo "Compiling libarchive-2.8.5"
+	@echo "Compiling libarchive-2.8.5"
 	cd $(LIBARCHIVE_DIR) && ./configure $(WITHOUT_FLAGS)
 	make -C $(LIBARCHIVE_DIR) -f Makefile CFLAGS+=-D_FILE_OFFSET_BITS=64
 	cp $(LIBARCHIVE_DIR)/.libs/$(LIBARCHIVE_STATIC) $(LIBRARY_DIR)/
@@ -23,14 +23,14 @@ libarchive:
 	cp $(LIBARCHIVE_DIR)/libarchive/archive_entry.h $(INCLUDE_DIR)/
 
 zlib:
-	echo "Compiling zlib-1.2.8"
+	@echo "Compiling zlib-1.2.8"
 	cd $(ZLIB_DIR) && ./configure
 	make -C $(ZLIB_DIR) -f Makefile
 	cp $(ZLIB_DIR)/$(ZLIB_STATIC) $(LIBRARY_DIR)/
 	cp $(ZLIB_DIR)/zlib.h $(INCLUDE_DIR)/
 
 stb:
-	echo "Compiling stb"
+	@echo "Compiling stb"
 	cp $(STB_DIR)/stb_image_resize.h $(INCLUDE_DIR)
 	cp $(STB_DIR)/stb_image.h $(INCLUDE_DIR)
 	cp $(STB_DIR)/stb_image_write.h $(INCLUDE_DIR)
