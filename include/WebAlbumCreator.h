@@ -2,7 +2,6 @@
 **  TODO
 **      Decrease size of thumbnails
 **      Add ability to manually choose resolution
-**      List.h
 */
 
 #ifndef WEB_ALBUM_CREATOR_H_SENTRY
@@ -29,16 +28,7 @@ struct WebAlbumParams
 };
 
 
-class WebAlbumCreator
-{
-
-public:
-    WebAlbumCreator() {};
-    ~WebAlbumCreator() {};
-
-    static void CheckParams(const WebAlbumParams &);
-    static void CreateWebAlbum(const WebAlbumParams &);
-};
+void CreateWebAlbum(const WebAlbumParams &);
 
 
 #endif

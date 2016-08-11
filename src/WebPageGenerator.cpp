@@ -36,6 +36,8 @@
 </body>\n\
 </html>"
 
+using WebAlbumCreator::List;
+
 
 WebPageGenerator::WebPageGenerator()
     : page_title(0),

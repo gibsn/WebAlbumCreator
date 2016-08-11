@@ -5,6 +5,7 @@
 
 #include "List.h"
 
+using WebAlbumCreator::List;
 
 class WebPageGenerator
 {

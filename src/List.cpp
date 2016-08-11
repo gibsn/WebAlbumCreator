@@ -5,6 +5,8 @@
 #include <stdio.h>
 
 
+using WebAlbumCreator::List;
+
 List::List()
     : head(0),
     tail(0),

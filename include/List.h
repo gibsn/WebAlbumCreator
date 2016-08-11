@@ -1,6 +1,9 @@
 #ifndef LIST_H_SENTRY
 #define LIST_H_SENTRY
 
+namespace WebAlbumCreator
+{
+
 struct Node
 {
     Node *next;
@@ -32,4 +35,5 @@ public:
     void ResetCurr() { curr = 0; }
 };
 
+}
 #endif

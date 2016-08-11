@@ -14,7 +14,7 @@ WebAlbumParams::WebAlbumParams()
 }
 
 
-void WebAlbumCreator::CheckParams(const WebAlbumParams &params)
+static void CheckParams(const WebAlbumParams &params)
 {
     if (!params.path_to_archive)
         throw NoPathToArchive();
@@ -27,7 +27,7 @@ void WebAlbumCreator::CheckParams(const WebAlbumParams &params)
 }
 
 
-void WebAlbumCreator::CreateWebAlbum(const WebAlbumParams &params)
+void CreateWebAlbum(const WebAlbumParams &params)
 {
     try
     {

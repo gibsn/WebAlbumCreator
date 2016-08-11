@@ -22,7 +22,7 @@ int main(int argc, const char **argv)
     params.web_page_title = "Photoalbum";
     params.path_to_css = "../css/blue.css";
 
-    WebAlbumCreator::CreateWebAlbum(params);
+    CreateWebAlbum(params);
 
     return 0;
 }
