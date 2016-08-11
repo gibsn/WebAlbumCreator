@@ -79,10 +79,11 @@ void WebPageGenerator::FinishWebPage() const
 
 void WebPageGenerator::GenerateWebPage()
 {
+    CheckParams();
+
     if ((fd = open(path_to_web_page, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
         throw WrongPathToWebPage();
 
-    CheckParams();
     InitWebPage();
 
     originals_names.ResetCurr();

@@ -14,10 +14,25 @@ WebAlbumParams::WebAlbumParams()
 }
 
 
+void WebAlbumCreator::CheckParams(const WebAlbumParams &params)
+{
+    if (!params.path_to_archive)
+        throw NoPathToArchive();
+    if (!params.path_to_webpage)
+        throw NoPathToWebPage();
+    if (!params.relative_path_to_originals)
+        throw NoPathToOriginals();
+    if (!params.relative_path_to_thumbnails)
+        throw NoPathToThumbnails();
+}
+
+
 void WebAlbumCreator::CreateWebAlbum(const WebAlbumParams &params)
 {
     try
     {
+        CheckParams(params);
+
         Extractor extractor;
         extractor.SetPathToFile(params.path_to_archive);
         extractor.SetPathToUnpack(params.path_to_unpack);
