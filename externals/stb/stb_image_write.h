@@ -165,6 +165,8 @@ STBIWDEF int stbi_write_hdr_to_func(stbi_write_func *func, void *context, int w,
 #include <string.h>
 #include <math.h>
 
+#include <zlib.h>
+
 #if defined(STBIW_MALLOC) && defined(STBIW_FREE) && (defined(STBIW_REALLOC) || defined(STBIW_REALLOC_SIZED))
 // ok
 #elif !defined(STBIW_MALLOC) && !defined(STBIW_FREE) && !defined(STBIW_REALLOC) && !defined(STBIW_REALLOC_SIZED)
@@ -948,7 +950,18 @@ unsigned char *stbi_write_png_to_mem(unsigned char *pixels, int stride_bytes, in
       STBIW_MEMMOVE(filt+j*(x*n+1)+1, line_buffer, x*n);
    }
    STBIW_FREE(line_buffer);
-   zlib = stbi_zlib_compress(filt, y*( x*n+1), &zlen, 8); // increase 8 to get smaller but use more memory
+   //zlib = stbi_zlib_compress(filt, y*( x*n+1), &zlen, 8); // increase 8 to get smaller but use more memory
+   uLongf buflen = compressBound(y*(x*n+1));
+   zlib = (unsigned char *)STBIW_MALLOC(buflen);
+   if(!zlib || compress2(zlib, &buflen, filt, y*(x*n+1), 9))
+   {
+      STBIW_FREE(filt);
+      STBIW_FREE(zlib);
+      return 0;
+   }
+
+   zlen = buflen;
+
    STBIW_FREE(filt);
    if (!zlib) return 0;
 
