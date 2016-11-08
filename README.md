@@ -4,3 +4,4 @@ WebAlbumCreator is a UNIX-style library written in C++. Its main purpose is to g
     - zlib<br>
     - stb<br>
     - libarchive<br>
+    - jpeg<br>
