@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 
+#include "Common.h"
 #include "List.h"
 
 using WebAlbumCreator::List;
@@ -21,6 +22,7 @@ class ThumbnailsCreator
     bool IsDir(const char *) const;
     bool IsOrdinaryFile (const char *) const;
     char *CreatePathForResized(const char *) const;
+    void WriteJpeg(const char *, Img *, int, int, int) const;
 
 public:
     ThumbnailsCreator();

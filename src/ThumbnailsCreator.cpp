@@ -1,6 +1,7 @@
 #include "ThumbnailsCreator.h"
 
 #include <dirent.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -11,8 +12,7 @@
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include "stb_image_resize.h"
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
+#include "jpeglib.h"
 
 #include "Exceptions.h"
 #include "Common.h"
@@ -64,11 +64,55 @@ char *ThumbnailsCreator::CreatePathForResized(const char *img_path) const
 }
 
 
+void ThumbnailsCreator::WriteJpeg(
+        const char *path,
+        Img *img,
+        int width,
+        int height,
+        int q) const
+{
+    struct jpeg_compress_struct cinfo;
+    struct jpeg_error_mgr jerr;
+    cinfo.err = jpeg_std_error(&jerr);
+    jpeg_create_compress(&cinfo);
+
+    FILE *out = fopen(path, "wb");
+    if (!out)
+    {
+        exit(-1);
+        perror("path");
+    }
+
+    jpeg_stdio_dest(&cinfo, out);
+
+    cinfo.image_width = width;
+    cinfo.image_height = height;
+    cinfo.input_components = 3;
+    cinfo.in_color_space = JCS_RGB;
+
+    jpeg_set_defaults(&cinfo);
+    jpeg_set_quality(&cinfo, q, true);
+    jpeg_start_compress(&cinfo, TRUE);
+
+    JSAMPROW row_pointer[1];
+    int row_stride = cinfo.image_width * cinfo.input_components;
+    while (cinfo.next_scanline < cinfo.image_height) {
+        row_pointer[0] = &img[cinfo.next_scanline * row_stride];
+        jpeg_write_scanlines(&cinfo, row_pointer, 1);
+    }
+
+    jpeg_finish_compress(&cinfo);
+    jpeg_destroy_compress(&cinfo);
+
+    fclose(out);
+}
+
+
 char *ThumbnailsCreator::ResizeAndSave(const char *img_path) const
 {
     int in_w, in_h, in_n;
 
-    Img *src = stbi_load(img_path, &in_w, &in_h, &in_n, 4);
+    Img *src = stbi_load(img_path, &in_w, &in_h, &in_n, 3);
 
     if (src == 0)
         throw CorruptedImage(img_path);
@@ -76,19 +120,20 @@ char *ThumbnailsCreator::ResizeAndSave(const char *img_path) const
     float k = sqrt(float(60000) / in_h / in_w);
     int out_w = k * in_w;
     int out_h = k * in_h;
-    Img *resized = (Img *)malloc(out_w * out_h * 4);
+    Img *resized = (Img *)malloc(out_w * out_h * 3);
 
     stbir_resize_uint8(
         src, in_w, in_h, 0,
         resized, out_w, out_h, 0,
-        4);
+        3);
+    stbi_image_free(src);
 
     char *resized_img_path = CreatePathForResized(img_path);
 
-    stbi_write_png(resized_img_path, out_w, out_h, 4, resized, 0);
+    int quality = 90; //TODO: make this confiurable
+    WriteJpeg(resized_img_path, resized, out_w, out_h, quality);
 
     free(resized);
-    stbi_image_free(src);
 
     return resized_img_path;
 }
