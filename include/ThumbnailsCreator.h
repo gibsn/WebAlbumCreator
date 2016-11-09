@@ -14,6 +14,7 @@ class ThumbnailsCreator
     const char *path_to_thumbnails;
     List originals_names;
     List thumbnails_names;
+    int quality;
 
     void CheckParams();
     char *ResizeAndSave(const char *) const;
@@ -29,6 +30,7 @@ public:
 
     void SetPathToOriginals(const char *p) { path_to_originals = p; }
     void SetPathToThumbnails(const char *p) { path_to_thumbnails = p; }
+    void SetQuality(int q) { quality = q; }
 
     const char *GetPathToOriginals() const { return path_to_originals; }
     const char *GetPathToThumbnails() const { return path_to_thumbnails; }

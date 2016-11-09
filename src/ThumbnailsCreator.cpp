@@ -20,12 +20,16 @@
 
 ThumbnailsCreator::ThumbnailsCreator()
     : path_to_originals(0),
-    path_to_thumbnails(0)
+    path_to_thumbnails(0),
+    quality(0)
 {}
 
 
 void ThumbnailsCreator::CheckParams()
 {
+    if (quality == 0)
+        quality = 75;
+
     if (path_to_originals == 0)
         throw NoPathToOriginals();
 
@@ -130,7 +134,6 @@ char *ThumbnailsCreator::ResizeAndSave(const char *img_path) const
 
     char *resized_img_path = CreatePathForResized(img_path);
 
-    int quality = 90; //TODO: make this confiurable
     WriteJpeg(resized_img_path, resized, out_w, out_h, quality);
 
     free(resized);

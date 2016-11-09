@@ -9,7 +9,8 @@ WebAlbumParams::WebAlbumParams()
     path_to_webpage(0),
     path_to_css(0),
     relative_path_to_originals(0),
-    relative_path_to_thumbnails(0)
+    relative_path_to_thumbnails(0),
+    quality(0)
 {
 }
 
@@ -41,6 +42,7 @@ void CreateWebAlbum(const WebAlbumParams &params)
         ThumbnailsCreator thmb_creator;
         thmb_creator.SetPathToOriginals(extractor.GetPathToUnpack());
         thmb_creator.SetPathToThumbnails(params.path_to_thumbnails);
+        thmb_creator.SetQuality(params.quality);
         thmb_creator.CreateThumbnails();
 
         WebPageGenerator web_page_generator;

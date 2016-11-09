@@ -1,6 +1,5 @@
 /*
 **  TODO
-**      Decrease size of thumbnails
 **      Add ability to manually choose resolution
 */
 
@@ -23,6 +22,7 @@ struct WebAlbumParams
     const char *path_to_css;
     const char *relative_path_to_originals;  //required
     const char *relative_path_to_thumbnails; //required
+    int quality;
 
     WebAlbumParams();
 };

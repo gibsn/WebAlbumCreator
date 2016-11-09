@@ -21,6 +21,7 @@ int main(int argc, const char **argv)
     params.relative_path_to_thumbnails = argv[6];
     params.web_page_title = "Photoalbum";
     params.path_to_css = "../css/blue.css";
+    params.quality = 90;
 
     CreateWebAlbum(params);
 

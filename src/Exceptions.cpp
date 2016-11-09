@@ -6,6 +6,7 @@
 #include "Exceptions.h"
 
 
+//TODO: add exceptions for JPEG
 LibArchiveEx::LibArchiveEx(Archive *a)
 {
     SetText(0);
