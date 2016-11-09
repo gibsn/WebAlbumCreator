@@ -62,7 +62,7 @@ char *ThumbnailsCreator::CreatePathForResized(const char *img_path) const
     char *extension = strrchr(resized_path, '.');
     *extension = '\0';
 
-    resized_path = StrCatAlloc(resized_path, "_resized.png");
+    resized_path = StrCatAlloc(resized_path, "_resized.jpg");
 
     return resized_path;
 }
@@ -95,7 +95,7 @@ void ThumbnailsCreator::WriteJpeg(
     cinfo.in_color_space = JCS_RGB;
 
     jpeg_set_defaults(&cinfo);
-    jpeg_set_quality(&cinfo, q, true);
+    jpeg_set_quality(&cinfo, q, TRUE);
     jpeg_start_compress(&cinfo, TRUE);
 
     JSAMPROW row_pointer[1];

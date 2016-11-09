@@ -38,6 +38,10 @@ jpeg:
 	make -C $(JPEG_DIR) -f makefile.ansi
 	cp $(JPEG_DIR)/$(JPEG_STATIC) $(LIBRARY_DIR)/libjpeg9.a
 	cp $(JPEG_DIR)/jpeglib.h $(INCLUDE_DIR)/
+	cp $(JPEG_DIR)/jconfig.h $(INCLUDE_DIR)/
+	cp $(JPEG_DIR)/jmorecfg.h $(INCLUDE_DIR)/
+	cp $(JPEG_DIR)/jerror.h $(INCLUDE_DIR)/
+	cp $(JPEG_DIR)/jpegint.h $(INCLUDE_DIR)/
 
 stb:
 	@echo "Compiling stb"
