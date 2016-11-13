@@ -21,8 +21,7 @@ List &List::operator=(const List &l)
     curr = 0;
     Node *p = l.head;
 
-    while(p)
-    {
+    while(p) {
         Append(strdup(p->data));
         p = p->next;
     }
@@ -39,10 +38,9 @@ List::~List()
 
 void List::DeleteList(Node *head)
 {
-    if (head)
-    {
-        if (!head)
-        DeleteList(head->next);
+    if (head) {
+        if (!head) DeleteList(head->next);
+
         free(head->data);
         delete head;
     }
@@ -56,8 +54,7 @@ void List::Push(char *s)
     new_elem->next = head;
     head = new_elem;
 
-    if (!tail)
-            tail = head;
+    if (!tail) tail = head;
 }
 
 
@@ -66,13 +63,11 @@ void List::Append(char *s)
     Node *new_elem = new Node;
     new_elem->data = s;
     new_elem->next = 0;
-    if (!head)
-    {
+
+    if (!head) {
         head = new_elem;
         tail = new_elem;
-    }
-    else
-    {
+    } else {
         tail->next = new_elem;
         tail = tail->next;
     }
@@ -81,17 +76,14 @@ void List::Append(char *s)
 
 char *List::GetNext()
 {
-    if (!head)
-        return 0;
+    if (!head) return 0;
 
-    if (!curr)
-    {
+    if (!curr) {
         curr = head;
         return curr->data;
     }
 
-    if (curr->next)
-    {
+    if (curr->next) {
         curr = curr->next;
         return curr->data;
     }
@@ -102,8 +94,7 @@ char *List::GetNext()
 
 void List::PrintList(Node *head)
 {
-    if (head)
-    {
+    if (head) {
         PrintList(head->next);
         printf("%s\n", head->data);
     }

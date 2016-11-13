@@ -17,21 +17,16 @@ WebAlbumParams::WebAlbumParams()
 
 static void CheckParams(const WebAlbumParams &params)
 {
-    if (!params.path_to_archive)
-        throw NoPathToArchive();
-    if (!params.path_to_webpage)
-        throw NoPathToWebPage();
-    if (!params.relative_path_to_originals)
-        throw NoPathToOriginals();
-    if (!params.relative_path_to_thumbnails)
-        throw NoPathToThumbnails();
+    if (!params.path_to_archive) throw NoPathToArchive();
+    if (!params.path_to_webpage) throw NoPathToWebPage();
+    if (!params.relative_path_to_originals) throw NoPathToOriginals();
+    if (!params.relative_path_to_thumbnails) throw NoPathToThumbnails();
 }
 
 
 void CreateWebAlbum(const WebAlbumParams &params)
 {
-    try
-    {
+    try {
         CheckParams(params);
 
         Extractor extractor;
@@ -56,8 +51,7 @@ void CreateWebAlbum(const WebAlbumParams &params)
         web_page_generator.GenerateWebPage();
 
     }
-    catch (Exception &ex)
-    {
+    catch (Exception &ex) {
         ex.Print();
     }
 }

@@ -69,21 +69,16 @@ void Extractor::SetUpPathToUnpack(ArchiveEntry *entry)
 
 void Extractor::CheckParams()
 {
-    if (path_to_file == 0)
-        throw NoPathToArchive();
+    if (path_to_file == 0) throw NoPathToArchive();
 
     struct stat buf;
-    if (stat(path_to_file, &buf) == -1)
-        throw WrongPathToArchive();
+    if (stat(path_to_file, &buf) == -1) throw WrongPathToArchive();
 
-    if (path_to_unpack)
-    {
+    if (path_to_unpack) {
         DIR *dir = opendir(path_to_unpack);
-        if (dir == 0)
-            throw WrongPathToUnpack();
+        if (dir == 0) throw WrongPathToUnpack();
         closedir(dir);
-    } else
-    {
+    } else {
         path_to_unpack = strdup(".");
     }
 }
@@ -111,24 +106,20 @@ void Extractor::Extract()
     if (archive_read_open_filename(in, path_to_file, 10240))
         throw LibArchiveEx(in);
 
-    while (true)
-    {
+    while (true) {
         r = archive_read_next_header(in, &entry);
-        if (r == ARCHIVE_EOF)
-            break;
-        if (r == ARCHIVE_FATAL)
-            throw LibArchiveEx(in);
+        if (r == ARCHIVE_EOF) break;
+        if (r == ARCHIVE_FATAL) throw LibArchiveEx(in);
 
         SetUpPathToUnpack(entry);
 
         r = archive_write_header(out, entry);
-        if (r == ARCHIVE_FATAL)
-            throw LibArchiveEx(in);
-        if (archive_entry_size(entry) > 0)
-            CopyData(in, out);
+        if (r == ARCHIVE_FATAL) throw LibArchiveEx(in);
+
+        if (archive_entry_size(entry) > 0) CopyData(in, out);
+
         r = archive_write_finish_entry(out);
-        if (r == ARCHIVE_FATAL)
-            throw LibArchiveEx(out);
+        if (r == ARCHIVE_FATAL) throw LibArchiveEx(out);
     }
 
     Finish(in, out);
@@ -142,16 +133,12 @@ void Extractor::CopyData(Archive *ar, Archive *aw) const
     size_t size;
     off_t offset;
 
-    while (true)
-    {
+    while (true) {
         r = archive_read_data_block(ar, &buff, &size, &offset);
-        if (r == ARCHIVE_EOF)
-            return;
-        if (r == ARCHIVE_FATAL)
-            throw LibArchiveEx(ar);
+        if (r == ARCHIVE_EOF) return;
+        if (r == ARCHIVE_FATAL) throw LibArchiveEx(ar);
 
         r = archive_write_data_block(aw, buff, size, offset);
-        if (r == ARCHIVE_FATAL)
-            throw LibArchiveEx(aw);
+        if (r == ARCHIVE_FATAL) throw LibArchiveEx(aw);
     }
 }
