@@ -15,8 +15,7 @@ char *StrCatAlloc(char *s1, const char *s2)
 bool IsImage(const char *name)
 {
     char *c;
-    if (!(c = (char *)strrchr(name, '.')))
-        return false;
+    if (!(c = (char *)strrchr(name, '.'))) return false;
 
     if (c == name + strlen(name) - 1 ||
         strcmp(c + 1, "jpg") == 0    ||
@@ -24,8 +23,10 @@ bool IsImage(const char *name)
         strcmp(c + 1, "bmp") == 0    ||
         strcmp(c + 1, "BMP") == 0    ||
         strcmp(c + 1, "png") == 0    ||
-        strcmp(c + 1, "PNG") == 0)
+        strcmp(c + 1, "PNG") == 0
+    ) {
         return true;
-    else
+    } else {
         return false;
+    }
 }

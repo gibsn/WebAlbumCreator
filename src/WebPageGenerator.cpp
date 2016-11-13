@@ -60,16 +60,11 @@ WebPageGenerator::~WebPageGenerator()
 
 void WebPageGenerator::CheckParams()
 {
-    if (!page_title)
-        page_title = strdup("Photoalbum");
-    if (!path_to_web_page)
-        throw NoPathToWebPage();
-    if (!path_to_originals)
-        throw NoPathToOriginals();
-    if (!path_to_thumbnails)
-        throw NoPathToThumbnails();
-    if (!path_to_css)
-        path_to_css = strdup("");
+    if (!page_title) page_title = strdup("Photoalbum");
+    if (!path_to_web_page) throw NoPathToWebPage();
+    if (!path_to_originals) throw NoPathToOriginals();
+    if (!path_to_thumbnails) throw NoPathToThumbnails();
+    if (!path_to_css) path_to_css = strdup("");
 }
 
 
@@ -104,8 +99,8 @@ void WebPageGenerator::GenerateWebPage()
     char *src_name, *thmb_name;
 
     while ((src_name = originals_names.GetNext()) &&
-           (thmb_name = thumbnails_names.GetNext()))
-    {
+           (thmb_name = thumbnails_names.GetNext())
+    ) {
         printf("%s\n", src_name);
         printf("%s\n", thmb_name);
         src_path = strdup(path_to_originals);

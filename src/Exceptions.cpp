@@ -10,8 +10,7 @@
 LibArchiveEx::LibArchiveEx(Archive *a)
 {
     SetText(0);
-    if (a)
-        SetText(archive_error_string(a));
+    if (a) SetText(archive_error_string(a));
 }
 
 
@@ -22,22 +21,17 @@ void LibArchiveEx::Print()
 
 
 StbEx::StbEx()
-{
-
-}
+{}
 
 
 void StbEx::Print()
-{
-
-}
+{}
 
 
 ReadDirEx::ReadDirEx(const char *t)
 {
     SetText(0);
-    if (t)
-        SetText(t);
+    if (t) SetText(t);
 }
 
 
@@ -92,8 +86,7 @@ void NoPathToThumbnails::Print()
 CorruptedImage::CorruptedImage(const char *t)
 {
     text = 0;
-    if (t)
-        text = t;
+    if (t) text = t;
 }
 
 

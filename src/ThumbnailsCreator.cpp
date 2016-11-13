@@ -34,25 +34,19 @@ ThumbnailsCreator::~ThumbnailsCreator()
 
 void ThumbnailsCreator::CheckParams()
 {
-    if (quality == 0)
-        quality = 75;
+    if (quality == 0) quality = 75;
 
-    if (path_to_originals == 0)
-        throw NoPathToOriginals();
+    if (path_to_originals == 0) throw NoPathToOriginals();
 
     DIR *dir = opendir(path_to_originals);
-    if (dir == 0)
-        throw WrongPathToOriginals();
+    if (dir == 0) throw WrongPathToOriginals();
     closedir(dir);
 
-    if (path_to_thumbnails)
-    {
+    if (path_to_thumbnails) {
         dir = opendir(path_to_thumbnails);
-        if (dir == 0)
-            throw WrongPathToThumbnails();
+        if (dir == 0) throw WrongPathToThumbnails();
         closedir(dir);
-    } else
-    {
+    } else {
         path_to_thumbnails = strdup(".");
     }
 }
@@ -88,8 +82,7 @@ void ThumbnailsCreator::WriteJpeg(
     jpeg_create_compress(&cinfo);
 
     FILE *out = fopen(path, "wb");
-    if (!out)
-    {
+    if (!out) {
         exit(-1);
         perror("path");
     }
@@ -125,8 +118,7 @@ char *ThumbnailsCreator::ResizeAndSave(const char *img_path) const
 
     Img *src = stbi_load(img_path, &in_w, &in_h, &in_n, 3);
 
-    if (src == 0)
-        throw CorruptedImage(img_path);
+    if (src == 0) throw CorruptedImage(img_path);
 
     float k = sqrt(float(60000) / in_h / in_w);
     int out_w = k * in_w;
@@ -152,8 +144,7 @@ char *ThumbnailsCreator::ResizeAndSave(const char *img_path) const
 bool ThumbnailsCreator::IsDir(const char *dir) const
 {
     DIR *n = opendir(dir);
-    if (n)
-        closedir(n);
+    if (n) closedir(n);
 
     return n != 0;
 }
@@ -182,23 +173,23 @@ void ThumbnailsCreator::ProcessDirectory(const char *path)
 {
     DIR *dir = opendir(path);
     DirEnt *curr_file;
-    while ((curr_file = readdir(dir)) != 0)
-    {
+    while ((curr_file = readdir(dir)) != 0) {
         char *file_path = StrCatAlloc(strdup(path), "/");
         file_path = StrCatAlloc(file_path, curr_file->d_name);
 
         if (IsImage(file_path) && IsOrdinaryFile(curr_file->d_name))
             ProcessImage(file_path);
 
-        if (IsDir(file_path) &&
+        if (IsDir(file_path)               &&
             strcmp(curr_file->d_name, ".") &&
-            strcmp(curr_file->d_name, ".."))
-        {
+            strcmp(curr_file->d_name, "..")
+        ) {
             ProcessDirectory(file_path);
         }
 
         free (file_path);
     }
+
     closedir(dir);
 }
 

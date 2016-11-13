@@ -5,8 +5,7 @@
 
 int main(int argc, const char **argv)
 {
-    if (argc < 7)
-    {
+    if (argc < 7) {
         printf("Example takes exactly 6 arguments\n");
         return 0;
     }
