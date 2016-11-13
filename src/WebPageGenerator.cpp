@@ -48,10 +48,20 @@ WebPageGenerator::WebPageGenerator()
 {}
 
 
+WebPageGenerator::~WebPageGenerator()
+{
+    if (page_title) free(page_title);
+    if (path_to_web_page) free(path_to_web_page);
+    if (path_to_css) free(path_to_css);
+    if (path_to_originals) free(path_to_originals);
+    if (path_to_thumbnails) free(path_to_thumbnails);
+}
+
+
 void WebPageGenerator::CheckParams()
 {
     if (!page_title)
-        page_title = "Photoalbum";
+        page_title = strdup("Photoalbum");
     if (!path_to_web_page)
         throw NoPathToWebPage();
     if (!path_to_originals)
@@ -59,7 +69,7 @@ void WebPageGenerator::CheckParams()
     if (!path_to_thumbnails)
         throw NoPathToThumbnails();
     if (!path_to_css)
-        path_to_css = "";
+        path_to_css = strdup("");
 }
 
 
@@ -96,11 +106,13 @@ void WebPageGenerator::GenerateWebPage()
     while ((src_name = originals_names.GetNext()) &&
            (thmb_name = thumbnails_names.GetNext()))
     {
-        char *src_path = strdup(path_to_originals);
+        printf("%s\n", src_name);
+        printf("%s\n", thmb_name);
+        src_path = strdup(path_to_originals);
         src_path = StrCatAlloc(src_path, "/");
         src_path = StrCatAlloc(src_path, src_name);
 
-        char *thmb_path = strdup(path_to_thumbnails);
+        thmb_path = strdup(path_to_thumbnails);
         thmb_path = StrCatAlloc(thmb_path, "/");
         thmb_path = StrCatAlloc(thmb_path, thmb_name);
 

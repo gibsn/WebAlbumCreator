@@ -25,6 +25,13 @@ ThumbnailsCreator::ThumbnailsCreator()
 {}
 
 
+ThumbnailsCreator::~ThumbnailsCreator()
+{
+    if (path_to_originals) free(path_to_originals);
+    if (path_to_thumbnails) free(path_to_thumbnails);
+}
+
+
 void ThumbnailsCreator::CheckParams()
 {
     if (quality == 0)
@@ -46,7 +53,7 @@ void ThumbnailsCreator::CheckParams()
         closedir(dir);
     } else
     {
-        path_to_thumbnails = ".";
+        path_to_thumbnails = strdup(".");
     }
 }
 

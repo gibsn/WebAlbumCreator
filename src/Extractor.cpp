@@ -18,6 +18,13 @@ Extractor::Extractor()
 {}
 
 
+Extractor::~Extractor()
+{
+    if (path_to_unpack) free(path_to_unpack);
+    if (path_to_file) free(path_to_file);
+}
+
+
 Archive *Extractor::SetUpRead() const
 {
     Archive *in = archive_read_new();
@@ -77,7 +84,7 @@ void Extractor::CheckParams()
         closedir(dir);
     } else
     {
-        path_to_unpack = ".";
+        path_to_unpack = strdup(".");
     }
 }
 

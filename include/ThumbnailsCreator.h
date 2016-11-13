@@ -2,6 +2,7 @@
 #define THUMBNAILS_CREATOR_H_SENTRY
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "Common.h"
 #include "List.h"
@@ -10,8 +11,8 @@ using WebAlbumCreator::List;
 
 class ThumbnailsCreator
 {
-    const char *path_to_originals;
-    const char *path_to_thumbnails;
+    char *path_to_originals;
+    char *path_to_thumbnails;
     List originals_names;
     List thumbnails_names;
     int quality;
@@ -27,9 +28,10 @@ class ThumbnailsCreator
 
 public:
     ThumbnailsCreator();
+    ~ThumbnailsCreator();
 
-    void SetPathToOriginals(const char *p) { path_to_originals = p; }
-    void SetPathToThumbnails(const char *p) { path_to_thumbnails = p; }
+    void SetPathToOriginals(const char *p) { path_to_originals = strdup(p); }
+    void SetPathToThumbnails(const char *p) { path_to_thumbnails = strdup(p); }
     void SetQuality(int q) { quality = q; }
 
     const char *GetPathToOriginals() const { return path_to_originals; }
