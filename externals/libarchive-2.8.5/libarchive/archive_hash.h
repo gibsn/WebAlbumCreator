@@ -79,13 +79,6 @@ typedef MD5_CTX archive_md5_ctx;
 #  define archive_md5_init(ctx)			MD5Init(ctx)
 #  define archive_md5_final(ctx, buf)		MD5Final(buf, ctx)
 #  define archive_md5_update(ctx, buf, n)	MD5Update(ctx, buf, n)
-#elif defined(ARCHIVE_HASH_MD5_LIBSYSTEM)
-#  include <CommonCrypto/CommonDigest.h>
-#  define ARCHIVE_HAS_MD5
-typedef CC_MD5_CTX archive_md5_ctx;
-#  define archive_md5_init(ctx)			CC_MD5_Init(ctx)
-#  define archive_md5_final(ctx, buf)		CC_MD5_Final(buf, ctx)
-#  define archive_md5_update(ctx, buf, n)	CC_MD5_Update(ctx, buf, n)
 #elif defined(ARCHIVE_HASH_MD5_OPENSSL)
 #  include <openssl/md5.h>
 #  define ARCHIVE_HAS_MD5
@@ -125,13 +118,6 @@ typedef SHA1_CTX archive_sha1_ctx;
 #  define archive_sha1_init(ctx)		SHA1Init(ctx)
 #  define archive_sha1_final(ctx, buf)		SHA1Final(buf, ctx)
 #  define archive_sha1_update(ctx, buf, n)	SHA1Update(ctx, buf, n)
-#elif defined(ARCHIVE_HASH_SHA1_LIBSYSTEM)
-#  include <CommonCrypto/CommonDigest.h>
-#  define ARCHIVE_HAS_SHA1
-typedef CC_SHA1_CTX archive_sha1_ctx;
-#  define archive_sha1_init(ctx)		CC_SHA1_Init(ctx)
-#  define archive_sha1_final(ctx, buf)		CC_SHA1_Final(buf, ctx)
-#  define archive_sha1_update(ctx, buf, n)	CC_SHA1_Update(ctx, buf, n)
 #elif defined(ARCHIVE_HASH_SHA1_OPENSSL)
 #  include <openssl/sha.h>
 #  define ARCHIVE_HAS_SHA1

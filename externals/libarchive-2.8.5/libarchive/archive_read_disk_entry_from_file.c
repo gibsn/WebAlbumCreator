@@ -30,9 +30,6 @@ __FBSDID("$FreeBSD: head/lib/libarchive/archive_read_disk_entry_from_file.c 2010
 /* Mac OSX requires sys/types.h before sys/acl.h. */
 #include <sys/types.h>
 #endif
-#ifdef HAVE_SYS_ACL_H
-#include <sys/acl.h>
-#endif
 #ifdef HAVE_SYS_EXTATTR_H
 #include <sys/extattr.h>
 #endif
@@ -153,13 +150,6 @@ archive_read_disk_entry_from_file(struct archive *_a,
 	name = archive_read_disk_gname(_a, archive_entry_gid(entry));
 	if (name != NULL)
 		archive_entry_copy_gname(entry, name);
-
-#ifdef HAVE_STRUCT_STAT_ST_FLAGS
-	/* On FreeBSD, we get flags for free with the stat. */
-	/* TODO: Does this belong in copy_stat()? */
-	if (st->st_flags != 0)
-		archive_entry_set_fflags(entry, st->st_flags, 0);
-#endif
 
 #ifdef HAVE_READLINK
 	if (S_ISLNK(st->st_mode)) {
