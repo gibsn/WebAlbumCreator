@@ -10,6 +10,8 @@ obj/
 *.sublime-project
 *.sublime-workspace
 .clang_complete
+*.o
+*.a
 photos/
 thumbnails/
 web_pages/
