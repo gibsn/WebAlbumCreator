@@ -17,6 +17,5 @@ libwac.a
 tags
 
 externals/libarchive-2.8.5/
-externals/zlib-1.2.8/
 externals/jpeg-9b
 

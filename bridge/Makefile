@@ -27,7 +27,6 @@ libarchive:
 
 zlib:
 	@echo "Compiling zlib-1.2.8"
-	cd $(ZLIB_DIR) && ./configure
 	make -C $(ZLIB_DIR) -f Makefile
 	cp $(ZLIB_DIR)/$(ZLIB_STATIC) $(LIBRARY_DIR)/
 	cp $(ZLIB_DIR)/zlib.h $(INCLUDE_DIR)/
@@ -52,7 +51,7 @@ stb:
 
 clean:
 	make -C $(LIBARCHIVE_DIR) -f Makefile distclean
-	make -C $(ZLIB_DIR) -f Makefile distclean
+	make -C $(ZLIB_DIR) -f Makefile clean
 	make -C $(JPEG_DIR) -f makefile.ansi clean
 
 .PHONY: clean

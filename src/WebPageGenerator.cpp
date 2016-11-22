@@ -101,8 +101,6 @@ void WebPageGenerator::GenerateWebPage()
     while ((src_name = originals_names.GetNext()) &&
            (thmb_name = thumbnails_names.GetNext())
     ) {
-        printf("%s\n", src_name);
-        printf("%s\n", thmb_name);
         src_path = strdup(path_to_originals);
         src_path = StrCatAlloc(src_path, "/");
         src_path = StrCatAlloc(src_path, src_name);
