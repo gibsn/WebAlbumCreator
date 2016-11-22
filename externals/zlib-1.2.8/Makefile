@@ -21,16 +21,10 @@ static: $(STATICLIB)
 
 $(STATICLIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $(OBJS)
-	-@ ($(RANLIB) $@ || true) >/dev/null 2>&1
 
 clean:
 	rm -f *.o $(STATICLIB)
 	-@rm -f .DS_Store
-
-depend:
-	makedepend -- $(CFLAGS) -- *.[ch]
-
-# DO NOT DELETE THIS LINE -- make depend depends on it.
 
 adler32.o zutil.o: zutil.h zlib.h zconf.h
 gzclose.o gzlib.o gzread.o gzwrite.o: zlib.h zconf.h gzguts.h
