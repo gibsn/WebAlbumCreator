@@ -33,8 +33,7 @@ zlib:
 
 jpeg:
 	@echo "Compiling jpeg-b"
-	cd $(JPEG_DIR) && ./configure
-	make -C $(JPEG_DIR) -f makefile.ansi
+	make -C $(JPEG_DIR) -f Makefile
 	cp $(JPEG_DIR)/$(JPEG_STATIC) $(LIBRARY_DIR)/libjpeg9.a
 	cp $(JPEG_DIR)/jpeglib.h $(INCLUDE_DIR)/
 	cp $(JPEG_DIR)/jconfig.h $(INCLUDE_DIR)/
@@ -52,6 +51,6 @@ stb:
 clean:
 	make -C $(LIBARCHIVE_DIR) -f Makefile distclean
 	make -C $(ZLIB_DIR) -f Makefile clean
-	make -C $(JPEG_DIR) -f makefile.ansi clean
+	make -C $(JPEG_DIR) -f Makefile clean
 
 .PHONY: clean
