@@ -17,6 +17,7 @@ thumbnails/
 web_pages/
 libwac.a
 tags
+test.sh
 
 externals/zlib-1.2.8/
 externals/jpeg-9b
