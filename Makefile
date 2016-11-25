@@ -62,7 +62,6 @@ clean:
 	rm -f Example
 	rm -rf Example.dSYM
 	rm -f bridge.touch
-	rm -rf $(STATIC_LIB)
 	make -C $(dir $(BRIDGE_DIR)/Makefile) -f Makefile clean
 
 clangcomp:
