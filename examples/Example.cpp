@@ -6,7 +6,9 @@
 int main(int argc, const char **argv)
 {
     if (argc < 7) {
-        printf("Example takes exactly 6 arguments\n");
+        printf("Usage: path_to_archive path_to_store_photos "
+               "path_to_store_thumbs path_to_webpage "
+               "relative_path_to_originals relative_path_to_thumbs\n");
         return 0;
     }
 
