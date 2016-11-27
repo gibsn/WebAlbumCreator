@@ -6,7 +6,7 @@ SRC_DIR = libarchive
 OBJ_DIR = obj
 DEPS_DIR = deps
 
-CFLAGS += -I$(SRC_DIR) -I.
+CFLAGS += -I$(SRC_DIR) -I. -I../../bridge/include
 
 AR=ar cru
 

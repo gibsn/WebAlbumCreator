@@ -27,6 +27,7 @@ zlib:
 	make -C $(ZLIB_DIR) -f Makefile
 	cp $(ZLIB_DIR)/$(ZLIB_STATIC) $(LIBRARY_DIR)/
 	cp $(ZLIB_DIR)/zlib.h $(INCLUDE_DIR)/
+	cp $(ZLIB_DIR)/zconf.h $(INCLUDE_DIR)/
 
 jpeg:
 	@echo "Compiling jpeg-b"

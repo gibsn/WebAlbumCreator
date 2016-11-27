@@ -15,7 +15,7 @@ OBJ_MODULES = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_MODULES:.cpp=.o)))
 DEPS_MODULES = $(addprefix $(DEPS_DIR)/, $(notdir $(SRC_MODULES:.cpp=.d)))
 STATIC_LIB = libwac.a
 
-BRIDGE_TARGETS = libarchive zlib stb jpeg
+BRIDGE_TARGETS = zlib libarchive stb jpeg
 
 CXXFLAGS += -I$(INCLUDE_DIR)
 CXXFLAGS += -I$(BRIDGE_DIR)/include
