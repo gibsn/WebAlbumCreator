@@ -143,14 +143,10 @@
 
 /* Set up defaults for internal error codes. */
 #ifndef ARCHIVE_ERRNO_FILE_FORMAT
-#if HAVE_EFTYPE
-#define	ARCHIVE_ERRNO_FILE_FORMAT EFTYPE
-#else
 #if HAVE_EILSEQ
 #define	ARCHIVE_ERRNO_FILE_FORMAT EILSEQ
 #else
 #define	ARCHIVE_ERRNO_FILE_FORMAT EINVAL
-#endif
 #endif
 #endif
 

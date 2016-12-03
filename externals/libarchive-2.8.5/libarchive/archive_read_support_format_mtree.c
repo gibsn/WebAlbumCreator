@@ -675,10 +675,7 @@ parse_file(struct archive_read *a, struct archive_entry *entry,
 		if ((parsed_kws & (MTREE_HAS_UID | MTREE_HAS_UNAME)) == 0)
 			archive_entry_set_uid(entry, st->st_uid);
 		if ((parsed_kws & MTREE_HAS_MTIME) == 0) {
-#if HAVE_STRUCT_STAT_ST_MTIMESPEC_TV_NSEC
-			archive_entry_set_mtime(entry, st->st_mtime,
-			    st->st_mtimespec.tv_nsec);
-#elif HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
+#if HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
 			archive_entry_set_mtime(entry, st->st_mtime,
 			    st->st_mtim.tv_nsec);
 #elif HAVE_STRUCT_STAT_ST_MTIME_N

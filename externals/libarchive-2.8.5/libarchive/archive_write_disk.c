@@ -30,9 +30,6 @@ __FBSDID("$FreeBSD: head/lib/libarchive/archive_write_disk.c 201159 2009-12-29 0
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif
-#ifdef HAVE_SYS_ACL_H
-#include <sys/acl.h>
-#endif
 #ifdef HAVE_SYS_EXTATTR_H
 #include <sys/extattr.h>
 #endif
@@ -1253,15 +1250,6 @@ _archive_write_close(struct archive *_a)
 #endif
 			times[0].tv_sec = p->atime;
 			times[0].tv_usec = p->atime_nanos / 1000;
-#ifdef HAVE_STRUCT_STAT_ST_BIRTHTIME
-			/* if it's valid and not mtime, push the birthtime first */
-			if (((times[1].tv_sec = p->birthtime) < p->mtime) &&
-			(p->birthtime > 0))
-			{
-				times[1].tv_usec = p->birthtime_nanos / 1000;
-				utimes(p->name, times);
-			}
-#endif
 			times[1].tv_sec = p->mtime;
 			times[1].tv_usec = p->mtime_nanos / 1000;
 #ifdef HAVE_LUTIMES
@@ -1933,9 +1921,6 @@ set_times(struct archive_write_disk *a)
 
 	/* If no time was provided, we're done. */
 	if (!archive_entry_atime_is_set(a->entry)
-#if HAVE_STRUCT_STAT_ST_BIRTHTIME
-	    && !archive_entry_birthtime_is_set(a->entry)
-#endif
 	    && !archive_entry_mtime_is_set(a->entry))
 		return (ARCHIVE_OK);
 
@@ -1947,25 +1932,6 @@ set_times(struct archive_write_disk *a)
 		atime = archive_entry_atime(a->entry);
 		atime_nsec = archive_entry_atime_nsec(a->entry);
 	}
-
-	/*
-	 * If you have struct stat.st_birthtime, we assume BSD birthtime
-	 * semantics, in which {f,l,}utimes() updates birthtime to earliest
-	 * mtime.  So we set the time twice, first using the birthtime,
-	 * then using the mtime.
-	 */
-#if HAVE_STRUCT_STAT_ST_BIRTHTIME
-	/* If birthtime is set, flush that through to disk first. */
-	if (archive_entry_birthtime_is_set(a->entry))
-		if (set_time(a->fd, a->mode, a->name, atime, atime_nsec,
-			archive_entry_birthtime(a->entry),
-			archive_entry_birthtime_nsec(a->entry))) {
-			archive_set_error(&a->archive, errno,
-			    "Can't update time for %s",
-			    a->name);
-			return (ARCHIVE_WARN);
-		}
-#endif
 
 	if (archive_entry_mtime_is_set(a->entry)) {
 		mtime = archive_entry_mtime(a->entry);
@@ -2600,11 +2566,7 @@ older(struct stat *st, struct archive_entry *entry)
 	if (st->st_mtime > archive_entry_mtime(entry))
 		return (0);
 	/* If this platform supports fractional seconds, try those. */
-#if HAVE_STRUCT_STAT_ST_MTIMESPEC_TV_NSEC
-	/* Definitely older. */
-	if (st->st_mtimespec.tv_nsec < archive_entry_mtime_nsec(entry))
-		return (1);
-#elif HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
+#if HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
 	/* Definitely older. */
 	if (st->st_mtim.tv_nsec < archive_entry_mtime_nsec(entry))
 		return (1);
