@@ -12,6 +12,7 @@ obj/
 .clang_complete
 *.o
 *.a
+.ycm_extra_conf.pyc
 photos/
 thumbnails/
 web_pages/
