@@ -1,5 +1,10 @@
 #include "WebAlbumCreator.h"
 
+#include "Extractor.h"
+#include "ThumbnailsCreator.h"
+#include "WebPageGenerator.h"
+#include "Exceptions.h"
+
 
 WebAlbumParams::WebAlbumParams()
     : path_to_archive(0),
