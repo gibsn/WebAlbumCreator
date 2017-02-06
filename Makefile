@@ -13,6 +13,7 @@ BRIDGE_DIR = bridge
 SRC_MODULES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_MODULES = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_MODULES:.cpp=.o)))
 DEPS_MODULES = $(addprefix $(DEPS_DIR)/, $(notdir $(SRC_MODULES:.cpp=.d)))
+
 STATIC_LIB = libwac.a
 
 BRIDGE_TARGETS = zlib libarchive stb jpeg
@@ -20,22 +21,33 @@ BRIDGE_TARGETS = zlib libarchive stb jpeg
 CXXFLAGS += -I$(INCLUDE_DIR)
 CXXFLAGS += -I$(BRIDGE_DIR)/include
 
-LDFLAGS = -L $(BRIDGE_DIR)/lib/
-LDFLAGS += -larchive -lz -ljpeg9
-
 src_to_obj = $(addprefix $(OBJ_DIR)/, $(notdir $(1:.cpp=.o)))
 
-Example: examples/Example.cpp $(OBJ_MODULES)
-	$(CXX) $(CXXFLAGS) examples/Example.cpp $(OBJ_MODULES) -o Example $(LDFLAGS)
+Example: examples/Example.cpp $(STATIC_LIB)
+	$(CXX) $(CXXFLAGS) examples/Example.cpp $(OBJ_MODULES) $(STATIC_LIB) -o Example
 
 static: $(STATIC_LIB)
 
 ifneq ($(MAKECMDGOALS), clean)
--include bridge.touch
+-include .bridge.touch
 endif
 
-$(STATIC_LIB): $(OBJ_MODULES)
-	$(AR) r $@ $(OBJ_MODULES)
+$(STATIC_LIB): .libs.touch $(OBJ_MODULES)
+	cp -r $(OBJ_DIR)/*.o .tmp-ar;                    \
+	ar -r $@ $(OBJ_MODULES) $(wildcard .tmp-ar/*.o); \
+	rm -rf .tmp-ar
+
+.libs.touch:
+	mkdir -p .tmp-ar;                     \
+
+	for file in $(BRIDGE_DIR)/lib/*.a; do \
+		cp $$file .tmp-ar/lib.a;          \
+		cd .tmp-ar && ar -x lib.a;        \
+		rm -f lib.a;                      \
+		cd ..;                            \
+	done
+
+	touch .libs.touch
 
 $(DEPS_DIR)/%.d: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -E -MM -MT $(call src_to_obj, $<) -MT $@ -MF $@ $<
@@ -43,7 +55,7 @@ $(DEPS_DIR)/%.d: $(SRC_DIR)/%.cpp
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-bridge.touch:
+.bridge.touch:
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(DEPS_DIR)
 	mkdir -p $(BRIDGE_DIR)/include
@@ -61,7 +73,8 @@ clean:
 	rm -f $(STATIC_LIB)
 	rm -f Example
 	rm -rf Example.dSYM
-	rm -f bridge.touch
+	rm -f .bridge.touch
+	rm -f .libs.touch
 	make -C $(dir $(BRIDGE_DIR)/Makefile) -f Makefile clean
 
 clangcomp:
