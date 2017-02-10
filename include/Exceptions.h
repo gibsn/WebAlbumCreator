@@ -1,27 +1,32 @@
 #ifndef EXCEPTIONS_H_SENTRY
 #define EXCEPTIONS_H_SENTRY
 
-#include "Common.h"
+#include <string.h>
+#include <stdlib.h>
 
 
-class Exception
+struct archive;
+struct archive_entry;
+
+class WebAlbumCreatorEx
 {
 
 public:
-    virtual void Print() = 0;
-    virtual ~Exception() {};
+    virtual const char *GetErrMsg() const = 0;
+    virtual ~WebAlbumCreatorEx() {};
 };
 
 
-class SystemEx: public Exception
+class SystemEx: public WebAlbumCreatorEx
 {
-    const char *text;
+    char *text;
 
 public:
-    virtual void Print() = 0;
-    const char *GetText() const { return text; }
-    void SetText(const char *t) { text = t; }
-    virtual ~SystemEx() {};
+    SystemEx(): text(NULL) {}
+    virtual ~SystemEx() { if (text) free(text); }
+
+    const char *GetErrMsg() const { return text; }
+    void SetText(const char *t) { text = strdup(t); }
 };
 
 
@@ -29,8 +34,7 @@ class LibArchiveEx : public SystemEx
 {
 
 public:
-    LibArchiveEx(Archive *);
-    void Print();
+    LibArchiveEx(archive *);
     ~LibArchiveEx() {};
 };
 
@@ -39,8 +43,7 @@ class StbEx : public SystemEx
 {
 
 public:
-    StbEx();
-    void Print();
+    StbEx() {};
     ~StbEx() {};
 };
 
@@ -50,12 +53,11 @@ class ReadDirEx: public SystemEx
 
 public:
     ReadDirEx(const char *);
-    void Print();
     ~ReadDirEx() {};
 };
 
 
-class UserEx : public Exception
+class UserEx : public WebAlbumCreatorEx
 {
 
 public:
@@ -68,7 +70,8 @@ class WrongPathToArchive : public UserEx
 
 public:
     WrongPathToArchive() {};
-    void Print();
+
+    const char *GetErrMsg() const;
 };
 
 
@@ -77,7 +80,8 @@ class NoPathToArchive : public UserEx
 
 public:
     NoPathToArchive() {};
-    void Print();
+
+    const char *GetErrMsg() const;
 };
 
 
@@ -86,7 +90,8 @@ class WrongPathToUnpack : public UserEx
 
 public:
     WrongPathToUnpack() {};
-    void Print();
+
+    const char *GetErrMsg() const;
 };
 
 
@@ -95,7 +100,8 @@ class WrongPathToOriginals : public UserEx
 
 public:
     WrongPathToOriginals() {};
-    void Print();
+
+    const char *GetErrMsg() const;
 };
 
 
@@ -104,7 +110,8 @@ class NoPathToOriginals : public UserEx
 
 public:
     NoPathToOriginals() {};
-    void Print();
+
+    const char *GetErrMsg() const;
 };
 
 
@@ -113,7 +120,8 @@ class WrongPathToThumbnails : public UserEx
 
 public:
     WrongPathToThumbnails() {};
-    void Print();
+
+    const char *GetErrMsg() const;
 };
 
 
@@ -122,17 +130,20 @@ class NoPathToThumbnails : public UserEx
 
 public:
     NoPathToThumbnails() {};
-    void Print();
+
+    const char *GetErrMsg() const;
 };
 
 
 class CorruptedImage: public UserEx
 {
-    const char *text;
+    char *text;
 
 public:
     CorruptedImage(const char *);
-    void Print();
+    ~CorruptedImage() { if (text) free(text); }
+
+    const char *GetErrMsg() const { return text; };
 };
 
 class WrongPathToWebPage: public UserEx
@@ -140,7 +151,8 @@ class WrongPathToWebPage: public UserEx
 
 public:
 	WrongPathToWebPage() {};
-	void Print();
+
+    const char *GetErrMsg() const;
 };
 
 
@@ -149,7 +161,8 @@ class NoPathToWebPage: public UserEx
 
 public:
 	NoPathToWebPage() {};
-	void Print();
+
+    const char *GetErrMsg() const;
 };
 
 #endif

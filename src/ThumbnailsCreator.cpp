@@ -172,7 +172,7 @@ void ThumbnailsCreator::ProcessImage(const char *path)
 void ThumbnailsCreator::ProcessDirectory(const char *path)
 {
     DIR *dir = opendir(path);
-    DirEnt *curr_file;
+    dirent *curr_file;
     while ((curr_file = readdir(dir)) != 0) {
         char *file_path = StrCatAlloc(strdup(path), "/");
         file_path = StrCatAlloc(file_path, curr_file->d_name);

@@ -24,7 +24,13 @@ int main(int argc, const char **argv)
     params.path_to_css = "../css/blue.css";
     params.quality = 90;
 
-    CreateWebAlbum(params);
+    try  {
+        CreateWebAlbum(params);
+    }
+
+    catch (WebAlbumCreatorEx &ex) {
+        printf("%s\n", ex.GetErrMsg());
+    }
 
     return 0;
 }

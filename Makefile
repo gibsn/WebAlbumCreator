@@ -32,22 +32,13 @@ ifneq ($(MAKECMDGOALS), clean)
 -include .bridge.touch
 endif
 
-$(STATIC_LIB): .libs.touch $(OBJ_MODULES)
-	cp -r $(OBJ_DIR)/*.o .tmp-ar;                    \
-	ar -r $@ $(OBJ_MODULES) $(wildcard .tmp-ar/*.o); \
+$(STATIC_LIB): $(OBJ_MODULES)
+	mkdir -p .tmp-ar
+	cp -r $(BRIDGE_DIR)/obj/*.o .tmp-ar
+	cp -r $(OBJ_DIR)/*.o .tmp-ar
+	echo .tmp-ar/*.o
+	ar -r $@ .tmp-ar/*.o
 	rm -rf .tmp-ar
-
-.libs.touch:
-	mkdir -p .tmp-ar;                     \
-
-	for file in $(BRIDGE_DIR)/lib/*.a; do \
-		cp $$file .tmp-ar/lib.a;          \
-		cd .tmp-ar && ar -x lib.a;        \
-		rm -f lib.a;                      \
-		cd ..;                            \
-	done
-
-	touch .libs.touch
 
 $(DEPS_DIR)/%.d: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -E -MM -MT $(call src_to_obj, $<) -MT $@ -MF $@ $<
@@ -61,6 +52,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	mkdir -p $(BRIDGE_DIR)/include
 	mkdir -p $(BRIDGE_DIR)/lib
 	mkdir -p $(BRIDGE_DIR)/bin
+	mkdir -p $(BRIDGE_DIR)/obj
 	make -C $(BRIDGE_DIR) -f Makefile $(BRIDGE_TARGETS)
 	@echo "-include $(DEPS_MODULES)" > $@
 
@@ -74,7 +66,7 @@ clean:
 	rm -f Example
 	rm -rf Example.dSYM
 	rm -f .bridge.touch
-	rm -f .libs.touch
+	rm -rf .tmp-ar
 	make -C $(dir $(BRIDGE_DIR)/Makefile) -f Makefile clean
 
 clangcomp:

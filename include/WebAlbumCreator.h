@@ -6,6 +6,9 @@
 #ifndef WEB_ALBUM_CREATOR_H_SENTRY
 #define WEB_ALBUM_CREATOR_H_SENTRY
 
+#include "Exceptions.h"
+
+
 struct WebAlbumParams
 {
     const char *path_to_archive;             //requried

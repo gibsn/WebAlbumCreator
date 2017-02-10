@@ -6,9 +6,6 @@
 CFLAGS= -O3
 SYSDEPMEM= jmemnobs.o
 
-RM= rm -f
-AR= ar rc
-
 LIBSOURCES= jaricom.c jcapimin.c jcapistd.c jcarith.c jccoefct.c jccolor.c \
         jcdctmgr.c jchuff.c jcinit.c jcmainct.c jcmarker.c jcmaster.c \
         jcomapi.c jcparam.c jcprepct.c jcsample.c jctrans.c jdapimin.c \
@@ -47,14 +44,10 @@ DLIBOBJECTS= jdapimin.o jdapistd.o jdarith.o jdtrans.o jdatasrc.o \
 # These objectfiles are included in libjpeg.a
 LIBOBJECTS= $(CLIBOBJECTS) $(DLIBOBJECTS) $(COMOBJECTS)
 
-all: libjpeg.a
-
-libjpeg.a: $(LIBOBJECTS)
-	$(RM) libjpeg.a
-	$(AR) libjpeg.a  $(LIBOBJECTS)
+all: $(LIBOBJECTS)
 
 clean:
-	$(RM) *.o libjpeg.a
+	$(RM) *.o
 	$(RM) -r ./.deps
 
 jaricom.o: jaricom.c jinclude.h jconfig.h jpeglib.h jmorecfg.h jpegint.h jerror.h

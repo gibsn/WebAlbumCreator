@@ -7,102 +7,75 @@
 
 
 //TODO: add exceptions for JPEG
-LibArchiveEx::LibArchiveEx(Archive *a)
+LibArchiveEx::LibArchiveEx(archive *a)
 {
-    SetText(0);
     if (a) SetText(archive_error_string(a));
 }
 
-
-void LibArchiveEx::Print()
-{
-    fprintf(stderr, "%s\n", GetText());
-}
-
-
-StbEx::StbEx()
-{}
-
-
-void StbEx::Print()
-{}
-
-
 ReadDirEx::ReadDirEx(const char *t)
 {
-    SetText(0);
     if (t) SetText(t);
 }
 
-
-void ReadDirEx::Print()
+const char *WrongPathToArchive::GetErrMsg() const
 {
-    fprintf(stderr, "%s\n", GetText());
+    return "You have entered the wrong path to the archive";
 }
 
 
-void WrongPathToArchive::Print()
+const char *NoPathToArchive::GetErrMsg() const
 {
-    fprintf(stderr, "You have entered the wrong path to the archive\n");
+    return "You haven't enered any path to the archive";
 }
 
 
-void NoPathToArchive::Print()
+const char *WrongPathToUnpack::GetErrMsg() const
 {
-    fprintf(stderr, "You haven't enered any path to the archive \n");
+    return "You have entered the wrong path where to unpack";
 }
 
 
-void WrongPathToUnpack::Print()
+const char *WrongPathToOriginals::GetErrMsg() const
 {
-    fprintf(stderr, "You have entered the wrong path where to unpack\n");
+    return "You have entered the wrong path to the original photos";
 }
 
 
-void WrongPathToOriginals::Print()
+const char *NoPathToOriginals::GetErrMsg() const
 {
-    fprintf(stderr, "You have entered the wrong path to the original photos\n");
+    return "You haven't entered any path to the original photos";
 }
 
 
-void NoPathToOriginals::Print()
+const char *WrongPathToThumbnails::GetErrMsg() const
 {
-    fprintf(stderr, "You haven't entered any path to the original photos\n");
+    return "You have entered the wrong thumbnails destination path";
 }
 
 
-void WrongPathToThumbnails::Print()
+const char *NoPathToThumbnails::GetErrMsg() const
 {
-    fprintf(stderr, "You have entered the wrong thumbnails destination path\n");
+    return "You haven't entered any path where to store the thumbnails";
 }
 
 
-void NoPathToThumbnails::Print()
-{
-    fprintf(stderr, "You haven't entered any path where to store the thumbnails\n");
-}
-
-
+#define MSG "Corrupted image"
 CorruptedImage::CorruptedImage(const char *t)
+    : text(NULL)
 {
-    text = 0;
-    if (t) text = t;
+    text = (char *)malloc(sizeof MSG + strlen(t));
+    sprintf(text, MSG "%s", t);
+}
+#undef MSG
+
+
+const char *WrongPathToWebPage::GetErrMsg() const
+{
+    return "You have entered the wrong path to web page";
 }
 
 
-void CorruptedImage::Print()
+const char *NoPathToWebPage::GetErrMsg() const
 {
-    printf("Corrupted image %s\n", text);
-}
-
-
-void WrongPathToWebPage::Print()
-{
-    fprintf(stderr, "You have entered the wrong path to web page\n");
-}
-
-
-void NoPathToWebPage::Print()
-{
-	fprintf(stderr, "You have not specified the path to web page\n");
+	return "You have not specified the path to web page";
 }

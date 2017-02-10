@@ -11,12 +11,12 @@ class Extractor
     char *path_to_unpack;
     char *path_to_file;
 
-    void CopyData(Archive *, Archive *) const;
-    Archive *SetUpRead() const;
-    Archive *SetUpWrite() const;
-    void SetUpPathToUnpack(ArchiveEntry *);
+    void CopyData(archive *, archive *) const;
+    archive *SetUpRead() const;
+    archive *SetUpWrite() const;
+    void SetUpPathToUnpack(archive_entry *);
     void CheckParams();
-    void Finish(Archive *, Archive *) const;
+    void Finish(archive *, archive *) const;
 
 public:
     Extractor();

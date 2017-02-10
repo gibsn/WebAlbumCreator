@@ -25,9 +25,9 @@ Extractor::~Extractor()
 }
 
 
-Archive *Extractor::SetUpRead() const
+archive *Extractor::SetUpRead() const
 {
-    Archive *in = archive_read_new();
+    archive *in = archive_read_new();
 
     archive_read_support_format_all(in);
     archive_read_support_compression_all(in);
@@ -36,9 +36,9 @@ Archive *Extractor::SetUpRead() const
 }
 
 
-Archive *Extractor::SetUpWrite() const
+archive *Extractor::SetUpWrite() const
 {
-    Archive *out = archive_write_disk_new();
+    archive *out = archive_write_disk_new();
     int flags = ARCHIVE_EXTRACT_TIME;
     flags |= ARCHIVE_EXTRACT_PERM;
     flags |= ARCHIVE_EXTRACT_ACL;
@@ -51,7 +51,7 @@ Archive *Extractor::SetUpWrite() const
 }
 
 
-void Extractor::SetUpPathToUnpack(ArchiveEntry *entry)
+void Extractor::SetUpPathToUnpack(archive_entry *entry)
 {
     char *filename = strdup(archive_entry_pathname(entry));
     int len = strlen(path_to_unpack) + 1 + strlen(filename) + 1;
@@ -84,7 +84,7 @@ void Extractor::CheckParams()
 }
 
 
-void Extractor::Finish(Archive *in, Archive *out) const
+void Extractor::Finish(archive *in, archive *out) const
 {
     archive_read_close(in);
     archive_read_finish(in);
@@ -95,13 +95,13 @@ void Extractor::Finish(Archive *in, Archive *out) const
 
 void Extractor::Extract()
 {
-    ArchiveEntry *entry;
+    archive_entry *entry;
     int r;
 
     CheckParams();
 
-    Archive *in = SetUpRead();
-    Archive *out = SetUpWrite();
+    archive *in = SetUpRead();
+    archive *out = SetUpWrite();
 
     if (archive_read_open_filename(in, path_to_file, 10240))
         throw LibArchiveEx(in);
@@ -126,7 +126,7 @@ void Extractor::Extract()
 }
 
 
-void Extractor::CopyData(Archive *ar, Archive *aw) const
+void Extractor::CopyData(archive *ar, archive *aw) const
 {
     int r;
     const void *buff;
