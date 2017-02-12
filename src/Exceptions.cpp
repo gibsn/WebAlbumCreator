@@ -59,7 +59,7 @@ const char *NoPathToThumbnails::GetErrMsg() const
 }
 
 
-#define MSG "Corrupted image"
+#define MSG "Corrupted image "
 CorruptedImage::CorruptedImage(const char *t)
     : text(NULL)
 {
