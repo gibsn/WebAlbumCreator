@@ -36,15 +36,15 @@ void ThumbnailsCreator::CheckParams()
 {
     if (quality == 0) quality = 75;
 
-    if (path_to_originals == 0) throw NoPathToOriginals();
+    if (path_to_originals == 0) throw Wac::NoPathToOriginals();
 
     DIR *dir = opendir(path_to_originals);
-    if (dir == 0) throw WrongPathToOriginals();
+    if (dir == 0) throw Wac::WrongPathToOriginals();
     closedir(dir);
 
     if (path_to_thumbnails) {
         dir = opendir(path_to_thumbnails);
-        if (dir == 0) throw WrongPathToThumbnails();
+        if (dir == 0) throw Wac::WrongPathToThumbnails();
         closedir(dir);
     } else {
         path_to_thumbnails = strdup(".");
@@ -118,7 +118,7 @@ char *ThumbnailsCreator::ResizeAndSave(const char *img_path) const
 
     Img *src = stbi_load(img_path, &in_w, &in_h, &in_n, 3);
 
-    if (src == 0) throw CorruptedImage(img_path);
+    if (src == 0) throw Wac::CorruptedImage(img_path);
 
     float k = sqrt(float(60000) / in_h / in_w);
     int out_w = k * in_w;

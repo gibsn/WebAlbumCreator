@@ -61,9 +61,9 @@ WebPageGenerator::~WebPageGenerator()
 void WebPageGenerator::CheckParams()
 {
     if (!page_title) page_title = strdup("Photoalbum");
-    if (!path_to_web_page) throw NoPathToWebPage();
-    if (!path_to_originals) throw NoPathToOriginals();
-    if (!path_to_thumbnails) throw NoPathToThumbnails();
+    if (!path_to_web_page) throw Wac::NoPathToWebPage();
+    if (!path_to_originals) throw Wac::NoPathToOriginals();
+    if (!path_to_thumbnails) throw Wac::NoPathToThumbnails();
     if (!path_to_css) path_to_css = strdup("");
 }
 
@@ -89,7 +89,7 @@ void WebPageGenerator::GenerateWebPage()
     CheckParams();
 
     if ((fd = open(path_to_web_page, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
-        throw WrongPathToWebPage();
+        throw Wac::WrongPathToWebPage();
 
     InitWebPage();
 

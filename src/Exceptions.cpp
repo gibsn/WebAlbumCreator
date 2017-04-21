@@ -5,6 +5,7 @@
 
 #include "Exceptions.h"
 
+namespace Wac {
 
 //TODO: add exceptions for JPEG
 LibArchiveEx::LibArchiveEx(archive *a)
@@ -78,4 +79,5 @@ const char *WrongPathToWebPage::GetErrMsg() const
 const char *NoPathToWebPage::GetErrMsg() const
 {
 	return "You have not specified the path to web page";
+}
 }

@@ -1,5 +1,5 @@
-#ifndef EXCEPTIONS_H_SENTRY
-#define EXCEPTIONS_H_SENTRY
+#ifndef WAC_EXCEPTIONS_H_SENTRY
+#define WAC_EXCEPTIONS_H_SENTRY
 
 #include <string.h>
 #include <stdlib.h>
@@ -7,6 +7,8 @@
 
 struct archive;
 struct archive_entry;
+
+namespace Wac {
 
 class WebAlbumCreatorEx
 {
@@ -165,4 +167,5 @@ public:
     const char *GetErrMsg() const;
 };
 
+};
 #endif

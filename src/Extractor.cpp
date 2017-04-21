@@ -69,14 +69,14 @@ void Extractor::SetUpPathToUnpack(archive_entry *entry)
 
 void Extractor::CheckParams()
 {
-    if (path_to_file == 0) throw NoPathToArchive();
+    if (path_to_file == 0) throw Wac::NoPathToArchive();
 
     struct stat buf;
-    if (stat(path_to_file, &buf) == -1) throw WrongPathToArchive();
+    if (stat(path_to_file, &buf) == -1) throw Wac::WrongPathToArchive();
 
     if (path_to_unpack) {
         DIR *dir = opendir(path_to_unpack);
-        if (dir == 0) throw WrongPathToUnpack();
+        if (dir == 0) throw Wac::WrongPathToUnpack();
         closedir(dir);
     } else {
         path_to_unpack = strdup(".");
@@ -104,22 +104,22 @@ void Extractor::Extract()
     archive *out = SetUpWrite();
 
     if (archive_read_open_filename(in, path_to_file, 10240))
-        throw LibArchiveEx(in);
+        throw Wac::LibArchiveEx(in);
 
     while (true) {
         r = archive_read_next_header(in, &entry);
         if (r == ARCHIVE_EOF) break;
-        if (r == ARCHIVE_FATAL) throw LibArchiveEx(in);
+        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(in);
 
         SetUpPathToUnpack(entry);
 
         r = archive_write_header(out, entry);
-        if (r == ARCHIVE_FATAL) throw LibArchiveEx(in);
+        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(in);
 
         if (archive_entry_size(entry) > 0) CopyData(in, out);
 
         r = archive_write_finish_entry(out);
-        if (r == ARCHIVE_FATAL) throw LibArchiveEx(out);
+        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(out);
     }
 
     Finish(in, out);
@@ -136,9 +136,9 @@ void Extractor::CopyData(archive *ar, archive *aw) const
     while (true) {
         r = archive_read_data_block(ar, &buff, &size, &offset);
         if (r == ARCHIVE_EOF) return;
-        if (r == ARCHIVE_FATAL) throw LibArchiveEx(ar);
+        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(ar);
 
         r = archive_write_data_block(aw, buff, size, offset);
-        if (r == ARCHIVE_FATAL) throw LibArchiveEx(aw);
+        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(aw);
     }
 }

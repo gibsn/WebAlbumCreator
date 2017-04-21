@@ -24,10 +24,10 @@ WebAlbumParams::WebAlbumParams()
 
 static void CheckParams(const WebAlbumParams &params)
 {
-    if (!params.path_to_archive) throw NoPathToArchive();
-    if (!params.path_to_webpage) throw NoPathToWebPage();
-    if (!params.relative_path_to_originals) throw NoPathToOriginals();
-    if (!params.relative_path_to_thumbnails) throw NoPathToThumbnails();
+    if (!params.path_to_archive) throw Wac::NoPathToArchive();
+    if (!params.path_to_webpage) throw Wac::NoPathToWebPage();
+    if (!params.relative_path_to_originals) throw Wac::NoPathToOriginals();
+    if (!params.relative_path_to_thumbnails) throw Wac::NoPathToThumbnails();
 }
 
 
