@@ -26,9 +26,7 @@ int main(int argc, const char **argv)
 
     try  {
         CreateWebAlbum(params);
-    }
-
-    catch (Wac::WebAlbumCreatorEx &ex) {
+    } catch (Wac::WebAlbumCreatorEx &ex) {
         printf("%s\n", ex.GetErrMsg());
     }
 
