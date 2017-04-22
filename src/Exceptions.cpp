@@ -10,7 +10,11 @@ namespace Wac {
 //TODO: add exceptions for JPEG
 LibArchiveEx::LibArchiveEx(archive *a)
 {
-    if (a) SetText(archive_error_string(a));
+    if (a && archive_error_string(a)) {
+        SetText(archive_error_string(a));
+    } else {
+        SetText("unknown LibArchive error");
+    }
 }
 
 ReadDirEx::ReadDirEx(const char *t)

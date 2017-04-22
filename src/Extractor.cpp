@@ -29,8 +29,14 @@ archive *Extractor::SetUpRead() const
 {
     archive *in = archive_read_new();
 
-    archive_read_support_format_all(in);
-    archive_read_support_compression_all(in);
+    archive_read_support_format_gnutar(in);
+    archive_read_support_format_rar(in);
+    archive_read_support_format_tar(in);
+    archive_read_support_format_zip(in);
+    archive_read_support_format_zip_streamable(in);
+    archive_read_support_format_zip_seekable(in);
+
+    archive_read_support_filter_gzip(in);
 
     return in;
 }
@@ -87,9 +93,9 @@ void Extractor::CheckParams()
 void Extractor::Finish(archive *in, archive *out) const
 {
     archive_read_close(in);
-    archive_read_finish(in);
+    archive_read_free(in);
     archive_write_close(out);
-    archive_write_finish(out);
+    archive_write_free(out);
 }
 
 
@@ -103,8 +109,9 @@ void Extractor::Extract()
     archive *in = SetUpRead();
     archive *out = SetUpWrite();
 
-    if (archive_read_open_filename(in, path_to_file, 10240))
+    if (archive_read_open_filename(in, path_to_file, 10240)) {
         throw Wac::LibArchiveEx(in);
+    }
 
     while (true) {
         r = archive_read_next_header(in, &entry);
@@ -114,7 +121,7 @@ void Extractor::Extract()
         SetUpPathToUnpack(entry);
 
         r = archive_write_header(out, entry);
-        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(in);
+        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(out);
 
         if (archive_entry_size(entry) > 0) CopyData(in, out);
 

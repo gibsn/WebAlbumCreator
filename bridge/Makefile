@@ -3,14 +3,14 @@ LIBRARY_DIR = lib
 OBJ_DIR = obj
 EXTERNALS_BASEDIR = ../externals
 
-LIBARCHIVE_DIR = $(EXTERNALS_BASEDIR)/libarchive-2.8.5
+LIBARCHIVE_DIR = $(EXTERNALS_BASEDIR)/libarchive-3.3.1
 ZLIB_DIR = $(EXTERNALS_BASEDIR)/zlib-1.2.8
 JPEG_DIR = $(EXTERNALS_BASEDIR)/jpeg-9b
 STB_DIR = $(EXTERNALS_BASEDIR)/stb
 
 
 libarchive:
-	@echo "Compiling libarchive-2.8.5"
+	@echo "Compiling libarchive-2.3.1"
 	make -C $(LIBARCHIVE_DIR) -f Makefile
 	cp $(LIBARCHIVE_DIR)/obj/*.o $(OBJ_DIR)/
 	cp $(LIBARCHIVE_DIR)/config.h $(INCLUDE_DIR)/

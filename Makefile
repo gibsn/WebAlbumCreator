@@ -62,6 +62,7 @@ clean:
 	rm -rf $(BRIDGE_DIR)/include
 	rm -rf $(BRIDGE_DIR)/lib
 	rm -rf $(BRIDGE_DIR)/bin
+	rm -rf $(BRIDGE_DIR)/obj
 	rm -f $(STATIC_LIB)
 	rm -f Example
 	rm -rf Example.dSYM
