@@ -5,6 +5,8 @@
 
 #include "Common.h"
 
+#define PHOTO_TOKEN_LENGTH 16
+
 
 class Extractor
 {

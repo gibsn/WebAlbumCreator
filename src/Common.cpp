@@ -1,10 +1,11 @@
 #include "Common.h"
 
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 
 
-char *StrCatAlloc(char *s1, const char *s2)
+char *str_cat_alloc(char *s1, const char *s2)
 {
     s1 = (char *)realloc(s1, strlen(s1) + strlen(s2) + 1);
     s1 = strcat(s1, s2);
@@ -12,21 +13,44 @@ char *StrCatAlloc(char *s1, const char *s2)
 }
 
 
-bool IsImage(const char *name)
+char *str_to_lower(char *str)
 {
-    char *c;
-    if (!(c = (char *)strrchr(name, '.'))) return false;
-
-    if (c == name + strlen(name) - 1 ||
-        strcmp(c + 1, "jpg") == 0    ||
-        strcmp(c + 1, "JPG") == 0    ||
-        strcmp(c + 1, "bmp") == 0    ||
-        strcmp(c + 1, "BMP") == 0    ||
-        strcmp(c + 1, "png") == 0    ||
-        strcmp(c + 1, "PNG") == 0
-    ) {
-        return true;
-    } else {
-        return false;
+    for(int i = 0; str[i]; i++){
+        str[i] = tolower(str[i]);
     }
+
+    return str;
+}
+
+
+bool is_image(const char *name)
+{
+    bool ret = false;
+    char *dup = strdup(name);
+    char *extension = extension = (char *)strrchr(dup, '.');
+    if (!extension) goto fin;
+
+    ret =
+        // extension == name + strlen(name) - 1            ||
+        strcmp(str_to_lower(extension), ".jpg") == 0    ||
+        strcmp(str_to_lower(extension), ".bmp") == 0    ||
+        strcmp(str_to_lower(extension), ".png") == 0;
+
+fin:
+    free(dup);
+    return ret;
+}
+
+
+char *gen_random_string(int length) {
+    static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    char *result = (char *)malloc(length + 1);
+
+    for (int i = 0; i < length; i++) {
+        result[i] = charset[rand() % (sizeof charset - 1)];
+    }
+
+    result[length] = '\0';
+
+    return result;
 }

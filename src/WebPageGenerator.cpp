@@ -102,12 +102,12 @@ void WebPageGenerator::GenerateWebPage()
            (thmb_name = thumbnails_names.GetNext())
     ) {
         src_path = strdup(path_to_originals);
-        src_path = StrCatAlloc(src_path, "/");
-        src_path = StrCatAlloc(src_path, src_name);
+        src_path = str_cat_alloc(src_path, "/");
+        src_path = str_cat_alloc(src_path, src_name);
 
         thmb_path = strdup(path_to_thumbnails);
-        thmb_path = StrCatAlloc(thmb_path, "/");
-        thmb_path = StrCatAlloc(thmb_path, thmb_name);
+        thmb_path = str_cat_alloc(thmb_path, "/");
+        thmb_path = str_cat_alloc(thmb_path, thmb_name);
 
         int length = strlen(PAGE_IMAGE) + strlen(src_path) + 2 * strlen(thmb_path);
         char *buf = new char[length];

@@ -58,12 +58,12 @@ char *ThumbnailsCreator::CreatePathForResized(const char *img_path) const
 {
     const char *name = strrchr(img_path, '/');
     char *resized_path = strdup(path_to_thumbnails);
-    resized_path = StrCatAlloc(resized_path, name);
+    resized_path = str_cat_alloc(resized_path, name);
 
     char *extension = strrchr(resized_path, '.');
     *extension = '\0';
 
-    resized_path = StrCatAlloc(resized_path, "_resized.jpg");
+    resized_path = str_cat_alloc(resized_path, ".jpg");
 
     return resized_path;
 }
@@ -174,11 +174,10 @@ void ThumbnailsCreator::ProcessDirectory(const char *path)
     DIR *dir = opendir(path);
     dirent *curr_file;
     while ((curr_file = readdir(dir)) != 0) {
-        char *file_path = StrCatAlloc(strdup(path), "/");
-        file_path = StrCatAlloc(file_path, curr_file->d_name);
+        char *file_path = str_cat_alloc(strdup(path), "/");
+        file_path = str_cat_alloc(file_path, curr_file->d_name);
 
-        if (IsImage(file_path) && IsOrdinaryFile(curr_file->d_name))
-            ProcessImage(file_path);
+        if (IsOrdinaryFile(curr_file->d_name)) ProcessImage(file_path);
 
         if (IsDir(file_path)               &&
             strcmp(curr_file->d_name, ".") &&

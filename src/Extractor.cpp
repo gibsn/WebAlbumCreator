@@ -8,6 +8,7 @@
 #include "archive_entry.h"
 #include "config.h"
 
+#include "Common.h"
 #include "Exceptions.h"
 #include "Extractor.h"
 
@@ -60,16 +61,24 @@ archive *Extractor::SetUpWrite() const
 void Extractor::SetUpPathToUnpack(archive_entry *entry)
 {
     char *filename = strdup(archive_entry_pathname(entry));
-    int len = strlen(path_to_unpack) + 1 + strlen(filename) + 1;
-    char *output_path = new char[len];
+    char *extension = strrchr(filename, '.');
+    if (!extension) throw Wac::LibArchiveEx(NULL);
+
+    char *photo_token = gen_random_string(PHOTO_TOKEN_LENGTH);
+
+    int len = strlen(path_to_unpack) + 1 + PHOTO_TOKEN_LENGTH + strlen(extension) + 1;
+    char *output_path =  (char *)malloc(len);
+
     output_path[0] = '\0';
     output_path = strcat(output_path, path_to_unpack);
     output_path = strcat(output_path, "/");
-    output_path = strcat(output_path, filename);
+    output_path = strcat(output_path, photo_token);
+    output_path = strcat(output_path, extension);
     archive_entry_set_pathname(entry, output_path);
 
     free(filename);
-    delete[] output_path;
+    free(photo_token);
+    free(output_path);
 }
 
 
@@ -117,6 +126,8 @@ void Extractor::Extract()
         r = archive_read_next_header(in, &entry);
         if (r == ARCHIVE_EOF) break;
         if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(in);
+
+        if (!is_image(archive_entry_pathname(entry))) continue;
 
         SetUpPathToUnpack(entry);
 

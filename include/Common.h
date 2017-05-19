@@ -4,8 +4,9 @@
 typedef unsigned char Img;
 
 
-char *StrCatAlloc(char *, const char *);
-bool IsImage(const char *);
+char *str_cat_alloc(char *, const char *);
+bool is_image(const char *);
+char *gen_random_string(int length);
 
 
 #endif
