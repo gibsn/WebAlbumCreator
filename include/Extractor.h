@@ -3,22 +3,28 @@
 
 #include <string.h>
 
-#include "Common.h"
 
 #define PHOTO_TOKEN_LENGTH 16
 
+
+struct archive;
+struct archive_entry;
 
 class Extractor
 {
     char *path_to_unpack;
     char *path_to_file;
 
-    void CopyData(archive *, archive *) const;
-    archive *SetUpRead() const;
-    archive *SetUpWrite() const;
+    static archive *SetUpRead();
+    static void FinishRead(archive *in);
+
+    static archive *SetUpWrite();
+    static void FinishWrite(archive *out);
+
+    static void CopyData(archive *in, archive *out);
+
     void SetUpPathToUnpack(archive_entry *);
     void CheckParams();
-    void Finish(archive *, archive *) const;
 
 public:
     Extractor();

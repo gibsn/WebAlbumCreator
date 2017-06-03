@@ -9,22 +9,39 @@
 
 using WebAlbumCreator::List;
 
+
+// do not copy objects of this class
+struct Img
+{
+    unsigned char *data;
+    int width;
+    int height;
+    int comp;
+
+    Img(): data(NULL), width(0), height(0), comp(0) {};
+    ~Img();
+};
+
+
 class ThumbnailsCreator
 {
     char *path_to_originals;
     char *path_to_thumbnails;
+
     List originals_names;
     List thumbnails_names;
+
     int quality;
 
     void CheckParams();
-    char *ResizeAndSave(const char *) const;
-    void ProcessImage(const char *);
-    void ProcessDirectory(const char *);
-    bool IsDir(const char *) const;
-    bool IsOrdinaryFile (const char *) const;
+
+    Img *Resize(const char *img_path) const;
     char *CreatePathForResized(const char *) const;
-    void WriteJpeg(const char *, Img *, int, int, int) const;
+    void WriteJpeg(const char *img_path, Img *img, int quality) const;
+
+    void ProcessImage(const char *img_path);
+    void ProcessDirectory(const char *dir);
+
 
 public:
     ThumbnailsCreator();

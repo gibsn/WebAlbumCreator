@@ -2,7 +2,6 @@
 
 #include <dirent.h>
 #include <stdio.h>
-#include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -15,7 +14,12 @@
 #include "jpeglib.h"
 
 #include "Exceptions.h"
-#include "Common.h"
+
+
+Img::~Img()
+{
+    stbi_image_free(data);
+}
 
 
 ThumbnailsCreator::ThumbnailsCreator()
@@ -27,33 +31,26 @@ ThumbnailsCreator::ThumbnailsCreator()
 
 ThumbnailsCreator::~ThumbnailsCreator()
 {
-    if (path_to_originals) free(path_to_originals);
-    if (path_to_thumbnails) free(path_to_thumbnails);
+    free(path_to_originals);
+    free(path_to_thumbnails);
 }
 
 
 void ThumbnailsCreator::CheckParams()
 {
     if (quality == 0) quality = 75;
-
-    if (path_to_originals == 0) throw Wac::NoPathToOriginals();
+    if (!path_to_originals) throw Wac::NoPathToOriginals();
 
     DIR *dir = opendir(path_to_originals);
-    if (dir == 0) throw Wac::WrongPathToOriginals();
+    if (!dir) throw Wac::WrongPathToOriginals();
     closedir(dir);
 
-    if (path_to_thumbnails) {
-        dir = opendir(path_to_thumbnails);
-        if (dir == 0) throw Wac::WrongPathToThumbnails();
-        closedir(dir);
-    } else {
-        path_to_thumbnails = strdup(".");
-    }
+    dir = opendir(path_to_thumbnails);
+    if (!dir) throw Wac::WrongPathToThumbnails();
+    closedir(dir);
 }
 
 
-//This returns a pointer to allocated dynamic memory
-//Must free outside this function
 char *ThumbnailsCreator::CreatePathForResized(const char *img_path) const
 {
     const char *name = strrchr(img_path, '/');
@@ -69,39 +66,35 @@ char *ThumbnailsCreator::CreatePathForResized(const char *img_path) const
 }
 
 
-void ThumbnailsCreator::WriteJpeg(
-        const char *path,
-        Img *img,
-        int width,
-        int height,
-        int q) const
+void ThumbnailsCreator::WriteJpeg(const char *path, Img *img, int quality) const
 {
     struct jpeg_compress_struct cinfo;
     struct jpeg_error_mgr jerr;
     cinfo.err = jpeg_std_error(&jerr);
     jpeg_create_compress(&cinfo);
 
+    // TODO: throw an exception here
     FILE *out = fopen(path, "wb");
     if (!out) {
-        exit(-1);
         perror("path");
+        exit(EXIT_FAILURE);
     }
 
     jpeg_stdio_dest(&cinfo, out);
 
-    cinfo.image_width = width;
-    cinfo.image_height = height;
+    cinfo.image_width = img->width;
+    cinfo.image_height = img->height;
     cinfo.input_components = 3;
     cinfo.in_color_space = JCS_RGB;
 
     jpeg_set_defaults(&cinfo);
-    jpeg_set_quality(&cinfo, q, TRUE);
+    jpeg_set_quality(&cinfo, quality, TRUE);
     jpeg_start_compress(&cinfo, TRUE);
 
     JSAMPROW row_pointer[1];
     int row_stride = cinfo.image_width * cinfo.input_components;
     while (cinfo.next_scanline < cinfo.image_height) {
-        row_pointer[0] = &img[cinfo.next_scanline * row_stride];
+        row_pointer[0] = &(img->data)[cinfo.next_scanline * row_stride];
         jpeg_write_scanlines(&cinfo, row_pointer, 1);
     }
 
@@ -112,59 +105,42 @@ void ThumbnailsCreator::WriteJpeg(
 }
 
 
-char *ThumbnailsCreator::ResizeAndSave(const char *img_path) const
+Img *ThumbnailsCreator::Resize(const char *img_path) const
 {
-    int in_w, in_h, in_n;
+    Img src;
 
-    Img *src = stbi_load(img_path, &in_w, &in_h, &in_n, 3);
+    src.data = stbi_load(img_path, &src.width, &src.height, &src.comp, 3);
 
-    if (src == 0) throw Wac::CorruptedImage(img_path);
+    if (!src.data) throw Wac::CorruptedImage(img_path);
 
-    float k = sqrt(float(60000) / in_h / in_w);
-    int out_w = k * in_w;
-    int out_h = k * in_h;
-    Img *resized = (Img *)malloc(out_w * out_h * 3);
+    float k = sqrt(float(60000) / src.height / src.width);
+    Img *resized = new Img;
+    resized->width = k * src.width;
+    resized->height = k * src.height;
+    resized->data = (unsigned char *)malloc(resized->width * resized->height * 3);
 
     stbir_resize_uint8(
-        src, in_w, in_h, 0,
-        resized, out_w, out_h, 0,
+        src.data, src.width, src.height, 0,
+        resized->data, resized->width, resized->height, 0,
         3);
-    stbi_image_free(src);
 
-    char *resized_img_path = CreatePathForResized(img_path);
-
-    WriteJpeg(resized_img_path, resized, out_w, out_h, quality);
-
-    free(resized);
-
-    return resized_img_path;
+    return resized;
 }
 
 
-bool ThumbnailsCreator::IsDir(const char *dir) const
+void ThumbnailsCreator::ProcessImage(const char *img_path)
 {
-    DIR *n = opendir(dir);
-    if (n) closedir(n);
-
-    return n != 0;
-}
-
-
-bool ThumbnailsCreator::IsOrdinaryFile(const char *name) const
-{
-    return name[0] != '.';
-}
-
-
-void ThumbnailsCreator::ProcessImage(const char *path)
-{
-    char *relative_path =
-        (char *)strstr(path, path_to_originals) + strlen(path_to_originals);
+    char *relative_path = (char *)strstr(img_path, path_to_originals) + strlen(path_to_originals);
     originals_names.Append(strdup(relative_path + 1));
 
-    char *thmb_name = ResizeAndSave(path);
+    Img *resized = Resize(img_path);
+
+    char *thmb_name = CreatePathForResized(img_path);
+    WriteJpeg(thmb_name, resized, quality);
 
     thumbnails_names.Append(strdup(strrchr(thmb_name, '/') + 1));
+
+    delete resized;
     free(thmb_name);
 }
 
@@ -172,14 +148,17 @@ void ThumbnailsCreator::ProcessImage(const char *path)
 void ThumbnailsCreator::ProcessDirectory(const char *path)
 {
     DIR *dir = opendir(path);
+
     dirent *curr_file;
     while ((curr_file = readdir(dir)) != 0) {
         char *file_path = str_cat_alloc(strdup(path), "/");
         file_path = str_cat_alloc(file_path, curr_file->d_name);
 
-        if (IsOrdinaryFile(curr_file->d_name)) ProcessImage(file_path);
+        if (is_ordinary_file(curr_file->d_name)) {
+            ProcessImage(file_path);
+        }
 
-        if (IsDir(file_path)               &&
+        if (is_dir(file_path)              &&
             strcmp(curr_file->d_name, ".") &&
             strcmp(curr_file->d_name, "..")
         ) {

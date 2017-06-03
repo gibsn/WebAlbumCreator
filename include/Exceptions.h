@@ -10,29 +10,30 @@ struct archive_entry;
 
 namespace Wac {
 
-class WebAlbumCreatorEx
+class Exception
 {
+    char *err_msg;
 
 public:
-    virtual const char *GetErrMsg() const = 0;
-    virtual ~WebAlbumCreatorEx() {};
+    Exception(): err_msg(NULL) {}
+    Exception(const char *t) { err_msg = strdup(t); }
+    virtual ~Exception() { free(err_msg); }
+
+    virtual const char *GetErrMsg() const { return err_msg; }
+    virtual void SetErrMsg(const char *t) { if (t) err_msg = strdup(t); }
 };
 
 
-class SystemEx: public WebAlbumCreatorEx
+class SystemEx: public Exception
 {
-    char *text;
 
 public:
-    SystemEx(): text(NULL) {}
-    virtual ~SystemEx() { if (text) free(text); }
-
-    const char *GetErrMsg() const { return text; }
-    void SetText(const char *t) { text = strdup(t); }
+    SystemEx() {}
+    SystemEx(const char *t): Exception(t) {}
 };
 
 
-class LibArchiveEx : public SystemEx
+class LibArchiveEx : public Exception
 {
 
 public:
@@ -41,25 +42,15 @@ public:
 };
 
 
-class StbEx : public SystemEx
+class StbEx : public Exception
 {
 
 public:
-    StbEx() {};
     ~StbEx() {};
 };
 
 
-class ReadDirEx: public SystemEx
-{
-
-public:
-    ReadDirEx(const char *);
-    ~ReadDirEx() {};
-};
-
-
-class UserEx : public WebAlbumCreatorEx
+class UserEx : public Exception
 {
 
 public:
@@ -71,8 +62,6 @@ class WrongPathToArchive : public UserEx
 {
 
 public:
-    WrongPathToArchive() {};
-
     const char *GetErrMsg() const;
 };
 
@@ -81,8 +70,6 @@ class NoPathToArchive : public UserEx
 {
 
 public:
-    NoPathToArchive() {};
-
     const char *GetErrMsg() const;
 };
 
@@ -91,8 +78,6 @@ class WrongPathToUnpack : public UserEx
 {
 
 public:
-    WrongPathToUnpack() {};
-
     const char *GetErrMsg() const;
 };
 
@@ -101,8 +86,6 @@ class WrongPathToOriginals : public UserEx
 {
 
 public:
-    WrongPathToOriginals() {};
-
     const char *GetErrMsg() const;
 };
 
@@ -111,8 +94,6 @@ class NoPathToOriginals : public UserEx
 {
 
 public:
-    NoPathToOriginals() {};
-
     const char *GetErrMsg() const;
 };
 
@@ -121,8 +102,6 @@ class WrongPathToThumbnails : public UserEx
 {
 
 public:
-    WrongPathToThumbnails() {};
-
     const char *GetErrMsg() const;
 };
 
@@ -131,29 +110,21 @@ class NoPathToThumbnails : public UserEx
 {
 
 public:
-    NoPathToThumbnails() {};
-
     const char *GetErrMsg() const;
 };
 
 
 class CorruptedImage: public UserEx
 {
-    char *text;
 
 public:
-    CorruptedImage(const char *);
-    ~CorruptedImage() { if (text) free(text); }
-
-    const char *GetErrMsg() const { return text; };
+    CorruptedImage(const char *t);
 };
 
 class WrongPathToWebPage: public UserEx
 {
 
 public:
-	WrongPathToWebPage() {};
-
     const char *GetErrMsg() const;
 };
 
@@ -162,10 +133,9 @@ class NoPathToWebPage: public UserEx
 {
 
 public:
-	NoPathToWebPage() {};
-
     const char *GetErrMsg() const;
 };
 
 };
+
 #endif

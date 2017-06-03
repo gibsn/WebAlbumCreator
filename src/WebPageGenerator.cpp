@@ -50,11 +50,11 @@ WebPageGenerator::WebPageGenerator()
 
 WebPageGenerator::~WebPageGenerator()
 {
-    if (page_title) free(page_title);
-    if (path_to_web_page) free(path_to_web_page);
-    if (path_to_css) free(path_to_css);
-    if (path_to_originals) free(path_to_originals);
-    if (path_to_thumbnails) free(path_to_thumbnails);
+    free(page_title);
+    free(path_to_web_page);
+    free(path_to_css);
+    free(path_to_originals);
+    free(path_to_thumbnails);
 }
 
 
@@ -68,17 +68,19 @@ void WebPageGenerator::CheckParams()
 }
 
 
-void WebPageGenerator::InitWebPage() const
+void WebPageGenerator::InitWebPage(int fd) const
 {
     int length = strlen(PAGE_HEAD) + strlen(path_to_css) + strlen(page_title);
-    char *buf = new char[length];
+    char *buf = (char *)malloc(length);
+
     sprintf(buf, PAGE_HEAD, page_title, path_to_css);
     write(fd, buf, strlen(buf));
-    delete [] buf;
+
+    free(buf);
 }
 
 
-void WebPageGenerator::FinishWebPage() const
+void WebPageGenerator::FinishWebPage(int fd) const
 {
     write(fd, PAGE_BOTTOM, strlen(PAGE_BOTTOM));
 }
@@ -88,10 +90,12 @@ void WebPageGenerator::GenerateWebPage()
 {
     CheckParams();
 
-    if ((fd = open(path_to_web_page, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1)
+    int fd;
+    if ((fd = open(path_to_web_page, O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1) {
         throw Wac::WrongPathToWebPage();
+    }
 
-    InitWebPage();
+    InitWebPage(fd);
 
     originals_names.ResetCurr();
     thumbnails_names.ResetCurr();
@@ -110,16 +114,15 @@ void WebPageGenerator::GenerateWebPage()
         thmb_path = str_cat_alloc(thmb_path, thmb_name);
 
         int length = strlen(PAGE_IMAGE) + strlen(src_path) + 2 * strlen(thmb_path);
-        char *buf = new char[length];
+        char *buf = (char *)malloc(length);
         sprintf(buf, PAGE_IMAGE, src_path, thmb_path, thmb_path);
         write(fd, buf, strlen(buf));
 
-        delete [] buf;
+        free(buf);
         free(src_path);
         free(thmb_path);
     }
 
-    FinishWebPage();
-
+    FinishWebPage(fd);
     close(fd);
 }

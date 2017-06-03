@@ -21,12 +21,12 @@ Extractor::Extractor()
 
 Extractor::~Extractor()
 {
-    if (path_to_unpack) free(path_to_unpack);
-    if (path_to_file) free(path_to_file);
+    free(path_to_unpack);
+    free(path_to_file);
 }
 
 
-archive *Extractor::SetUpRead() const
+archive *Extractor::SetUpRead()
 {
     archive *in = archive_read_new();
 
@@ -43,9 +43,10 @@ archive *Extractor::SetUpRead() const
 }
 
 
-archive *Extractor::SetUpWrite() const
+archive *Extractor::SetUpWrite()
 {
     archive *out = archive_write_disk_new();
+
     int flags = ARCHIVE_EXTRACT_TIME;
     flags |= ARCHIVE_EXTRACT_PERM;
     flags |= ARCHIVE_EXTRACT_ACL;
@@ -84,7 +85,7 @@ void Extractor::SetUpPathToUnpack(archive_entry *entry)
 
 void Extractor::CheckParams()
 {
-    if (path_to_file == 0) throw Wac::NoPathToArchive();
+    if (!path_to_file) throw Wac::NoPathToArchive();
 
     struct stat buf;
     if (stat(path_to_file, &buf) == -1) throw Wac::WrongPathToArchive();
@@ -99,10 +100,15 @@ void Extractor::CheckParams()
 }
 
 
-void Extractor::Finish(archive *in, archive *out) const
+void Extractor::FinishRead(archive *in)
 {
     archive_read_close(in);
     archive_read_free(in);
+}
+
+
+void Extractor::FinishWrite(archive *out)
+{
     archive_write_close(out);
     archive_write_free(out);
 }
@@ -140,11 +146,12 @@ void Extractor::Extract()
         if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(out);
     }
 
-    Finish(in, out);
+    FinishRead(in);
+    FinishWrite(out);
 }
 
 
-void Extractor::CopyData(archive *ar, archive *aw) const
+void Extractor::CopyData(archive *in, archive *out)
 {
     int r;
     const void *buff;
@@ -152,11 +159,11 @@ void Extractor::CopyData(archive *ar, archive *aw) const
     off_t offset;
 
     while (true) {
-        r = archive_read_data_block(ar, &buff, &size, &offset);
+        r = archive_read_data_block(in, &buff, &size, &offset);
         if (r == ARCHIVE_EOF) return;
-        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(ar);
+        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(in);
 
-        r = archive_write_data_block(aw, buff, size, offset);
-        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(aw);
+        r = archive_write_data_block(out, buff, size, offset);
+        if (r == ARCHIVE_FATAL) throw Wac::LibArchiveEx(out);
     }
 }

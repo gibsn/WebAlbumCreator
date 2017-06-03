@@ -21,8 +21,8 @@ obj/
 .ycm_extra_conf.pyc
 
 photos/
-thumbnails/
-web_pages/
+thmbs/
+html/
 
 libwac.a
 

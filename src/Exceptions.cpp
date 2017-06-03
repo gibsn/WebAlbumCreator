@@ -1,26 +1,22 @@
-#include <string.h>
 #include <stdio.h>
 
 #include "archive.h"
 
 #include "Exceptions.h"
 
-namespace Wac {
+
+using namespace Wac;
 
 //TODO: add exceptions for JPEG
 LibArchiveEx::LibArchiveEx(archive *a)
 {
     if (a && archive_error_string(a)) {
-        SetText(archive_error_string(a));
+        SetErrMsg(archive_error_string(a));
     } else {
-        SetText("unknown LibArchive error");
+        SetErrMsg("unknown LibArchive error");
     }
 }
 
-ReadDirEx::ReadDirEx(const char *t)
-{
-    if (t) SetText(t);
-}
 
 const char *WrongPathToArchive::GetErrMsg() const
 {
@@ -66,10 +62,14 @@ const char *NoPathToThumbnails::GetErrMsg() const
 
 #define MSG "Corrupted image "
 CorruptedImage::CorruptedImage(const char *t)
-    : text(NULL)
 {
-    text = (char *)malloc(sizeof MSG + strlen(t));
-    sprintf(text, MSG "%s", t);
+    int len = sizeof MSG + strlen(t);
+    char *_err_msg = (char *)malloc(len);
+
+    snprintf(_err_msg, len, MSG "%s", t);
+
+    SetErrMsg(_err_msg);
+    free(_err_msg);
 }
 #undef MSG
 
@@ -83,5 +83,4 @@ const char *WrongPathToWebPage::GetErrMsg() const
 const char *NoPathToWebPage::GetErrMsg() const
 {
 	return "You have not specified the path to web page";
-}
 }

@@ -7,21 +7,22 @@
 
 using WebAlbumCreator::List;
 
+
 class WebPageGenerator
 {
     char *page_title;
     char *path_to_web_page;
     char *path_to_css;
+
     List originals_names;
     List thumbnails_names;
+
     char *path_to_originals;
     char *path_to_thumbnails;
 
-    int fd;
-
     void CheckParams();
-    void InitWebPage() const;
-    void FinishWebPage() const;
+    void InitWebPage(int fd) const;
+    void FinishWebPage(int fd) const;
 
 public:
     WebPageGenerator();

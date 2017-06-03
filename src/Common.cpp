@@ -1,6 +1,7 @@
 #include "Common.h"
 
 #include <ctype.h>
+#include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -39,6 +40,21 @@ bool is_image(const char *name)
 fin:
     free(dup);
     return ret;
+}
+
+
+bool is_ordinary_file(const char *name)
+{
+    return name[0] != '.';
+}
+
+
+bool is_dir(const char *dir)
+{
+    DIR *n = opendir(dir);
+    if (n) closedir(n);
+
+    return n != 0;
 }
 
 
