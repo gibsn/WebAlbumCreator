@@ -34,7 +34,6 @@ archive *Extractor::SetUpRead()
 
     if (
         archive_read_support_format_gnutar(in)         ||
-        archive_read_support_format_rar(in)            ||
         archive_read_support_format_tar(in)            ||
         archive_read_support_format_zip(in)            ||
         archive_read_support_format_zip_streamable(in) ||

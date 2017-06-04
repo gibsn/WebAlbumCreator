@@ -7,13 +7,12 @@
 
 using namespace Wac;
 
-//TODO: add exceptions for JPEG
 LibArchiveEx::LibArchiveEx(archive *a)
 {
     if (a && archive_error_string(a)) {
         SetErrMsg(archive_error_string(a));
     } else {
-        SetErrMsg("unknown LibArchive error");
+        SetErrMsg("Unknown LibArchive error");
     }
 }
 
