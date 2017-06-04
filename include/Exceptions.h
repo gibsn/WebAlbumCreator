@@ -54,6 +54,8 @@ class UserEx : public Exception
 {
 
 public:
+    UserEx() {};
+    UserEx(const char *t): Exception(t) {}
     ~UserEx() {};
 };
 
@@ -125,7 +127,7 @@ class WrongPathToWebPage: public UserEx
 {
 
 public:
-    const char *GetErrMsg() const;
+    WrongPathToWebPage(const char *t): UserEx(t) {}
 };
 
 
@@ -136,6 +138,13 @@ public:
     const char *GetErrMsg() const;
 };
 
+
+class NoSpace: public SystemEx {
+
+public:
+    NoSpace(const char *t): SystemEx(t) {}
 };
+
+}
 
 #endif

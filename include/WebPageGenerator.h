@@ -21,6 +21,9 @@ class WebPageGenerator
     char *path_to_thumbnails;
 
     void CheckParams();
+
+    void GeneratePhotoEntry(int fd, const char *src_name, const char *thmb_name);
+
     void InitWebPage(int fd) const;
     void FinishWebPage(int fd) const;
 

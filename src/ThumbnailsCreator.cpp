@@ -1,6 +1,7 @@
 #include "ThumbnailsCreator.h"
 
 #include <dirent.h>
+#include <errno.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -73,11 +74,13 @@ void ThumbnailsCreator::WriteJpeg(const char *path, Img *img, int quality) const
     cinfo.err = jpeg_std_error(&jerr);
     jpeg_create_compress(&cinfo);
 
-    // TODO: throw an exception here
     FILE *out = fopen(path, "wb");
     if (!out) {
-        perror("path");
-        exit(EXIT_FAILURE);
+        if (errno == ENOSPC) {
+            throw Wac::NoSpace(strerror(errno));
+        }
+
+        throw Wac::SystemEx(strerror(errno));
     }
 
     jpeg_stdio_dest(&cinfo, out);
@@ -133,15 +136,22 @@ void ThumbnailsCreator::ProcessImage(const char *img_path)
     char *relative_path = (char *)strstr(img_path, path_to_originals) + strlen(path_to_originals);
     originals_names.Append(strdup(relative_path + 1));
 
-    Img *resized = Resize(img_path);
-
     char *thmb_name = CreatePathForResized(img_path);
-    WriteJpeg(thmb_name, resized, quality);
+    Img *resized = NULL;
 
-    thumbnails_names.Append(strdup(strrchr(thmb_name, '/') + 1));
+    try {
+        resized = Resize(img_path);
+        WriteJpeg(thmb_name, resized, quality);
 
-    delete resized;
-    free(thmb_name);
+        thumbnails_names.Append(strdup(strrchr(thmb_name, '/') + 1));
+
+        delete resized;
+        free(thmb_name);
+    } catch (Wac::Exception &) {
+        delete resized;
+        free(thmb_name);
+        throw;
+    }
 }
 
 
@@ -150,25 +160,33 @@ void ThumbnailsCreator::ProcessDirectory(const char *path)
     DIR *dir = opendir(path);
 
     dirent *curr_file;
-    while ((curr_file = readdir(dir)) != 0) {
-        char *file_path = str_cat_alloc(strdup(path), "/");
-        file_path = str_cat_alloc(file_path, curr_file->d_name);
+    char *file_path = NULL;
 
-        if (is_ordinary_file(curr_file->d_name)) {
-            ProcessImage(file_path);
+    try {
+        while ((curr_file = readdir(dir)) != 0) {
+            file_path = str_cat_alloc(strdup(path), "/");
+            file_path = str_cat_alloc(file_path, curr_file->d_name);
+
+            if (is_ordinary_file(curr_file->d_name)) {
+                ProcessImage(file_path);
+            }
+
+            if (is_dir(file_path)              &&
+                strcmp(curr_file->d_name, ".") &&
+                strcmp(curr_file->d_name, "..")
+            ) {
+                ProcessDirectory(file_path);
+            }
+
+            free (file_path);
         }
 
-        if (is_dir(file_path)              &&
-            strcmp(curr_file->d_name, ".") &&
-            strcmp(curr_file->d_name, "..")
-        ) {
-            ProcessDirectory(file_path);
-        }
-
-        free (file_path);
+        closedir(dir);
+    } catch (Wac::Exception &) {
+        free(file_path);
+        closedir(dir);
+        throw;
     }
-
-    closedir(dir);
 }
 
 

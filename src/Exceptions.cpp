@@ -74,12 +74,6 @@ CorruptedImage::CorruptedImage(const char *t)
 #undef MSG
 
 
-const char *WrongPathToWebPage::GetErrMsg() const
-{
-    return "You have entered the wrong path to web page";
-}
-
-
 const char *NoPathToWebPage::GetErrMsg() const
 {
 	return "You have not specified the path to web page";

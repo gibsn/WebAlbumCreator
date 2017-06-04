@@ -15,6 +15,8 @@ class Extractor
     char *path_to_unpack;
     char *path_to_file;
 
+    void ExtractorLoop(archive *in, archive *out);
+
     static archive *SetUpRead();
     static void FinishRead(archive *in);
 
