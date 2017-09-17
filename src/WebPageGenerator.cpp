@@ -15,9 +15,7 @@
 <html>\n\
 <head>\n\
     <meta charset=\"utf-8\">\n\
-    <title>\n\
-        %s\n\
-    </title>\n\
+    <title>%s</title>\n\
 <link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">\n\
 </head>\n\
 <body>\n\
